@@ -356,6 +356,9 @@
 
         // Clear result output
         elements.result.innerHTML = "";
+
+        // ✅ Reset the dropdown menu to "Load Build"
+        document.getElementById("load-build").selectedIndex = 0;
       });
 
       function generateShareLink() {
@@ -416,6 +419,62 @@
       }
 
       loadBuildFromURL();
+
+      function getBuildKey(suffix = "") {
+        return `ror2-loader-${selectedSkill || "noskill"}-${suffix}`;
+      }
+
+      function saveBuild() {
+        const name = prompt("Name this build:");
+        if (!name) return;
+        const build = {
+          level: elements.levelSlider.value,
+          skill: selectedSkill,
+          items: selectedDamageItems,
+        };
+        localStorage.setItem(getBuildKey(name), JSON.stringify(build));
+        updateLoadDropdown();
+      }
+
+      function loadBuildFromKey(key) {
+        const data = JSON.parse(localStorage.getItem(key));
+        if (!data) return;
+
+        elements.levelSlider.value = data.level;
+        selectedSkill = data.skill;
+        Object.keys(selectedDamageItems).forEach(
+          (key) => delete selectedDamageItems[key]
+        );
+        Object.entries(data.items || {}).forEach(([key, value]) => {
+          selectedDamageItems[key] = value;
+        });
+        elements.levelSlider.dispatchEvent(new Event("input"));
+
+        updateSkillDisplay();
+        initSkillGrid();
+        updateDamageItemDisplay();
+        initDamageItemGrid();
+      }
+
+      function updateLoadDropdown() {
+        const select = document.getElementById("load-build");
+        select.innerHTML = `<option value="">📂 Load Build</option>`; // placeholder first
+        Object.keys(localStorage).forEach((key) => {
+          if (key.startsWith("ror2-loader")) {
+            const label = key.replace("ror2-loader-", "").replace(/-/g, " ");
+            select.innerHTML += `<option value="${key}">${label}</option>`;
+          }
+        });
+      }
+
+      document
+        .getElementById("save-build")
+        .addEventListener("click", saveBuild);
+      document.getElementById("load-build").addEventListener("change", (e) => {
+        if (e.target.value) loadBuildFromKey(e.target.value);
+      });
+
+      updateLoadDropdown();
     </script>
   </body>
 </html>

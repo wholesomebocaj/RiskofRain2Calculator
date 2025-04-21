@@ -61,17 +61,24 @@
             Calculate Damage
           </button>
 
-          <div class="build-controls">
-            <button id="save-build" class="build-btn save-btn">
-              💾 Save Build
-            </button>
-            <select id="load-build" class="build-dropdown">
-              <option value="">📂 Load Build</option>
-            </select>
-          </div>
-        </div>
+          <button id="save-build" class="secondary-btn">💾 Save Build</button>
 
-        <button id="reset-btn" class="reset-btn">Reset</button>
+          <select id="load-build" class="build-dropdown">
+            <option value="">📂 Load Build</option>
+          </select>
+
+          <button id="share-build" class="secondary-btn">🔗 Share Build</button>
+
+          <input
+            type="text"
+            id="share-url"
+            readonly
+            placeholder="Your build link will appear here"
+            style="flex: 1; margin-top: 8px"
+          />
+
+          <button id="reset-btn" class="reset-btn">Reset</button>
+        </div>
       </div>
 
       <!-- Right Panel -->
@@ -434,7 +441,7 @@
       });
 
       function getBuildKey(suffix = "") {
-        return `ror2-${selectedSkill || "noskill"}-${suffix}`;
+        return `ror2-railgunner-${selectedSkill || "noskill"}-${suffix}`;
       }
 
       function saveBuild() {
@@ -452,22 +459,33 @@
       function loadBuildFromKey(key) {
         const data = JSON.parse(localStorage.getItem(key));
         if (!data) return;
+
         elements.levelSlider.value = data.level;
         selectedSkill = data.skill;
-        selectedDamageItems = data.items || {};
+
+        // Reset and reapply all items
+        Object.keys(selectedDamageItems).forEach(
+          (key) => delete selectedDamageItems[key]
+        );
+        Object.entries(data.items || {}).forEach(([key, value]) => {
+          selectedDamageItems[key] = value;
+        });
+
         elements.levelSlider.dispatchEvent(new Event("input"));
-        initSkillGrid();
         updateSkillDisplay();
+        initSkillGrid();
         updateDamageItemDisplay();
         initDamageItemGrid();
       }
 
       function updateLoadDropdown() {
         const select = document.getElementById("load-build");
-        select.innerHTML = `<option value="">📂 Load Build</option>`; // placeholder first
+        select.innerHTML = `<option value="">📂 Load Build</option>`;
         Object.keys(localStorage).forEach((key) => {
-          if (key.startsWith("ror2-")) {
-            const label = key.replace("ror2-", "").replace(/-/g, " ");
+          if (key.startsWith("ror2-railgunner")) {
+            const label = key
+              .replace("ror2-railgunner-", "")
+              .replace(/-/g, " ");
             select.innerHTML += `<option value="${key}">${label}</option>`;
           }
         });
@@ -494,6 +512,62 @@
       initDamageItemGrid();
       updateDamageItemDisplay();
       updateLoadDropdown();
+      function generateShareLink() {
+        const level = elements.levelSlider.value;
+        const skill = selectedSkill || "";
+        const items = Object.entries(selectedDamageItems)
+          .filter(([_, d]) => d.count > 0)
+          .map(([id, d]) => `${id}:${d.count}`)
+          .join(",");
+
+        const params = new URLSearchParams({
+          level,
+          skill,
+          items,
+        });
+
+        const url = `${window.location.origin}${
+          window.location.pathname
+        }?${params.toString()}`;
+        document.getElementById("share-url").value = url;
+      }
+
+      document
+        .getElementById("share-build")
+        .addEventListener("click", generateShareLink);
+
+      function loadBuildFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        const level = parseInt(params.get("level")) || 20;
+        const skill = params.get("skill") || null;
+        const items = params.get("items");
+
+        elements.levelSlider.value = level;
+        elements.levelSlider.dispatchEvent(new Event("input"));
+
+        selectedSkill = skill;
+
+        // Reset and reapply items
+        selectedDamageItems = {};
+        if (items) {
+          items.split(",").forEach((pair) => {
+            const [id, count] = pair.split(":");
+            if (damageItems[id]) {
+              selectedDamageItems[id] = {
+                item: damageItems[id],
+                count: parseInt(count),
+              };
+            }
+          });
+        }
+
+        updateSkillDisplay();
+        initSkillGrid();
+        updateDamageItemDisplay();
+        initDamageItemGrid();
+      }
+
+      loadBuildFromURL();
     </script>
   </body>
 </html>
