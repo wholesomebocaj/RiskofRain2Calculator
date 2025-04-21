@@ -1,0 +1,489 @@
+/* ============================================
+   RAILGUNNER DAMAGE CALCULATOR - MAIN STYLES
+=============================================== */
+.railgunner-calculator {
+  --railgunner-accent: #8a2be2;
+  --railgunner-dark: #4b0082;
+  --item-bg: rgba(15, 52, 96, 0.3);
+  --text-light: #e0e0e0;
+  --text-muted: #aaaaaa;
+
+  display: flex;
+  width: 100%;
+  min-width: 1400px;
+  overflow: hidden;
+  background: #0a0e1a;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ============================================
+   LEFT PANEL - SETTINGS & CONTROLS
+=============================================== */
+.railgunner-calculator .settings-panel {
+  width: 50%;
+  padding: 30px;
+  border-right: 1px solid rgba(138, 43, 226, 0.3);
+  background: rgba(10, 14, 26, 0.95);
+  height: 100%;
+  min-width: 700px;
+  box-sizing: border-box;
+}
+
+.railgunner-calculator .input-group {
+  margin-bottom: 30px;
+}
+
+.railgunner-calculator .input-group label {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--railgunner-accent);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.railgunner-calculator .input-group h2 {
+  color: var(--railgunner-accent);
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+.railgunner-calculator input[type="range"] {
+  width: 100%;
+  height: 12px;
+  accent-color: var(--railgunner-accent);
+  background: rgba(138, 43, 226, 0.1);
+  border-radius: 6px;
+}
+
+/* ============================================
+   SKILL SELECTION
+=============================================== */
+.railgunner-calculator .skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 18px;
+  margin: 25px 0;
+}
+
+.railgunner-calculator .skill-tile {
+  background: rgba(138, 43, 226, 0.1);
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  border-radius: 10px;
+  padding: 18px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+
+.railgunner-calculator .skill-tile:hover {
+  background: rgba(138, 43, 226, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(138, 43, 226, 0.2);
+}
+
+.railgunner-calculator .skill-tile.active {
+  background: rgba(138, 43, 226, 0.25);
+  border-color: var(--railgunner-accent);
+  box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+}
+
+.railgunner-calculator .skill-tile img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+.railgunner-calculator .skill-tile span {
+  display: block;
+  font-size: 1.1rem;
+  color: var(--text-light);
+}
+
+.railgunner-calculator .active-skill-display {
+  background: rgba(138, 43, 226, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 15px;
+}
+
+/* ============================================
+   DAMAGE ITEM SELECTION
+=============================================== */
+.railgunner-calculator .damage-item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 18px;
+  margin: 25px 0;
+}
+
+.railgunner-calculator .damage-item-tile {
+  background: var(--item-bg);
+  border: 1px dashed rgba(138, 43, 226, 0.3);
+  border-radius: 10px;
+  padding: 18px;
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+  transition: all 0.25s;
+}
+
+.railgunner-calculator .damage-item-tile:hover {
+  background: rgba(138, 43, 226, 0.2);
+  transform: translateY(-3px);
+}
+
+.railgunner-calculator .damage-item-tile.active {
+  background: rgba(138, 43, 226, 0.25);
+  border: 1px solid var(--railgunner-accent);
+  box-shadow: 0 0 12px rgba(138, 43, 226, 0.3);
+}
+
+.railgunner-calculator .damage-item-tile img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.railgunner-calculator .item-count {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--railgunner-accent);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   ITEM TOOLTIP
+=============================================== */
+.railgunner-calculator .item-tooltip {
+  visibility: hidden;
+  width: 240px;
+  background: #16213e;
+  border: 1px solid var(--railgunner-accent);
+  border-radius: 8px;
+  padding: 14px;
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1;
+}
+
+.railgunner-calculator .damage-item-tile:hover .item-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.railgunner-calculator .item-tooltip h4 {
+  margin: 0 0 8px 0;
+  color: var(--railgunner-accent);
+}
+
+.railgunner-calculator .item-tooltip p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+}
+
+/* ============================================
+   SELECTED ITEMS & CONTROLS
+=============================================== */
+.railgunner-calculator .active-damage-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.railgunner-calculator .active-damage-item {
+  background: var(--item-bg);
+  border-radius: 8px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+}
+
+.railgunner-calculator .active-damage-item img {
+  width: 22px;
+  height: 22px;
+}
+
+.selected-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.selected-item-controls button {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--railgunner-accent);
+  color: white;
+  border: none;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.selected-item-controls button:hover {
+  background: var(--railgunner-dark);
+}
+
+.selected-item-count {
+  min-width: 30px;
+  text-align: center;
+}
+
+/* ============================================
+   RIGHT PANEL - OUTPUT
+=============================================== */
+.railgunner-calculator .output-panel {
+  width: 50%;
+  padding: 30px;
+  background: rgba(15, 52, 96, 0.1);
+  height: 100%;
+  min-width: 700px;
+  box-sizing: border-box;
+}
+
+.railgunner-calculator .results-card {
+  background: rgba(15, 52, 96, 0.5);
+  border-radius: 12px;
+  padding: 30px;
+  height: calc(100% - 60px);
+}
+
+.railgunner-calculator .damage-section {
+  margin: 25px 0;
+  padding: 20px;
+  background: rgba(15, 52, 96, 0.3);
+  border-radius: 10px;
+}
+
+.railgunner-calculator .damage-section h4 {
+  margin-top: 0;
+  color: var(--railgunner-accent);
+  font-size: 1.3rem;
+}
+
+.railgunner-calculator .damage-value {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: var(--railgunner-accent);
+  text-align: center;
+  margin: 20px 0;
+  text-shadow: 0 0 12px rgba(138, 43, 226, 0.6);
+}
+
+.railgunner-calculator .damage-note {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.railgunner-calculator .damage-breakdown {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 18px;
+  margin-top: 25px;
+}
+
+.railgunner-calculator .damage-breakdown p {
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
+
+/* Skill Used Display */
+.railgunner-calculator .skill-used {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 25px 0;
+}
+
+.railgunner-calculator .skill-used img {
+  width: 40px;
+  height: 40px;
+}
+
+.railgunner-calculator .skill-used strong {
+  font-size: 1.4rem;
+  color: var(--railgunner-accent);
+}
+
+
+
+/* ============================================
+   INTERACTIONS & STATE FEEDBACK
+=============================================== */
+.railgunner-calculator .calculate-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--railgunner-accent), var(--railgunner-dark));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s;
+  margin-top: 20px;
+}
+
+.railgunner-calculator .calculate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+}
+
+.railgunner-calculator .error-card {
+  background: rgba(255, 85, 85, 0.15);
+  border: 1px solid #ff5555;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.railgunner-calculator .error {
+  color: #ff5555;
+  font-size: 1.1rem;
+}
+
+/* Responsive Fallback */
+@media (max-width: 1400px) {
+  .railgunner-calculator {
+    min-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+/* ============================================
+   RESET BUTTON
+=============================================== */
+.reset-btn {
+  width: 100%;
+  padding: 14px;
+  background: rgba(138, 43, 226, 0.1);
+  color: var(--text-light);
+  border: 1px solid var(--railgunner-accent);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.2s ease;
+}
+
+.reset-btn:hover {
+  background: rgba(138, 43, 226, 0.2);
+  transform: scale(1.02);
+}
+
+/* ================================
+   🔘 Button Row Layout (Fix layout)
+================================ */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+/* ================================
+   💾 Save Build Button
+================================ */
+.secondary-btn {
+  padding: 0.8rem 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-light);
+  border: 1px solid var(--railgunner-accent);
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ================================
+   📂 Load Build Dropdown
+================================ */
+#load-build {
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-light);
+  border: 1px solid var(--railgunner-accent);
+  border-radius: 6px;
+  font-size: 1rem;
+  flex-shrink: 0;
+  min-width: 200px;
+  appearance: none;
+}
+
+#load-build option {
+  background: #1a1a2e;
+  color: white;
+}
+
+/* Build Save/Load Controls */
+.build-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.build-btn {
+  padding: 10px 18px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(135deg, #8a2be2, #4b0082);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 8px rgba(138, 43, 226, 0.3);
+}
+
+.build-btn:hover {
+  background: linear-gradient(135deg, #9e42ff, #5a2ca0);
+  transform: scale(1.03);
+}
+
+.build-dropdown {
+  background: rgba(15, 52, 96, 0.6);
+  color: white;
+  border: 1px solid rgba(138, 43, 226, 0.5);
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  outline: none;
+  min-width: 180px;
+}
+
+.build-dropdown option {
+  background: #0a0e1a;
+  color: white;
+}

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loader Damage Calculator</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="../styles/survivors/loader.css" />
+  </head>
+  <body>
+    <div class="navbar enhanced-navbar">
+      <a href="../index.html" class="nav-back">
+        <span class="arrow">←</span> Back to Survivors
+      </a>
+
+      <div class="nav-center">
+        <img
+          src="../images/Survivor_Icons/loader-icon.png"
+          alt="Loader"
+          class="nav-icon"
+        />
+        <h1 class="nav-title">Loader Damage Calculator</h1>
+      </div>
+
+      <!-- empty div to balance layout -->
+      <div class="nav-filler"></div>
+    </div>
+
+    <div class="calculator loader-calculator">
+      <!-- Left Panel -->
+      <div class="settings-panel">
+        <div class="input-container">
+          <div class="input-group">
+            <label>
+              Survivor Level: <span id="level-display">20</span>
+              <span class="base-damage"
+                >(Base Damage: <span id="base-damage-display">57.6</span>)</span
+              >
+            </label>
+            <input type="range" id="level" min="1" max="99" value="20" />
+          </div>
+
+          <div class="input-group">
+            <label>
+              Movement Buff: <span id="speed-buff-display">0%</span>
+            </label>
+            <input
+              type="range"
+              id="speed-buff"
+              min="0"
+              max="100"
+              value="0"
+              step="5"
+            />
+          </div>
+
+          <div class="input-group">
+            <h2>Select Skill</h2>
+            <div class="skill-grid" id="skill-grid"></div>
+            <div class="active-skill-display" id="active-skill">
+              <p>No skill selected</p>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <h2>Damage Items</h2>
+            <div class="damage-item-grid" id="damage-item-grid"></div>
+            <div class="selected-damage-items" id="selected-damage-items">
+              <p>No damage items selected</p>
+            </div>
+          </div>
+
+          <!-- Buttons Section -->
+          <div class="button-row">
+            <button
+              id="calculate-btn"
+              class="calculate-btn loader-calculate-btn"
+            >
+              Calculate Damage
+            </button>
+          </div>
+
+          <!-- Save/Load Build -->
+          <div class="build-row">
+            <button id="save-build" class="secondary-btn">💾 Save Build</button>
+            <select id="load-build">
+              <option value="">📂 Load Build</option>
+            </select>
+          </div>
+
+          <!-- Share + Reset -->
+          <div class="share-section">
+            <button id="share-build" class="secondary-btn">
+              🔗 Share Build
+            </button>
+            <input
+              type="text"
+              id="share-url"
+              readonly
+              placeholder="Your build link will appear here"
+            />
+            <button id="reset-btn" class="reset-btn">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="output-panel">
+        <div class="results-card" id="result"></div>
+      </div>
+    </div>
+
+    <script type="module">
+      import {
+        damageItems,
+        selectedDamageItems,
+        initDamageItemGrid,
+        updateDamageItemDisplay,
+        calculateItemMultiplier,
+      } from "../scripts/shared/itemInventory.js";
+
+      const skills = {
+        knuckleboom: {
+          name: "Knuckleboom (Primary)",
+          icon: "../images/Skills/Loader/Knuckleboom.png",
+          multiplier: 3.2,
+          description: "Swing at nearby enemies for 320% damage.",
+        },
+        spikedFist: {
+          name: "Spiked Fist (Secondary)",
+          icon: "../images/Skills/Loader/Spiked_Fist.png",
+          multiplier: 3.2,
+          description: "Deals 320% damage and pulls enemies.",
+        },
+        chargedGauntlet: {
+          name: "Charged Gauntlet (Utility)",
+          icon: "../images/Skills/Loader/Charged_Gauntlet.png",
+          multiplier: 27.0,
+          description: "Charge up a piercing punch for 2700% damage.",
+        },
+        thunderGauntlet: {
+          name: "Thunder Gauntlet (Utility)",
+          icon: "../images/Skills/Loader/Thunder_Gauntlet.png",
+          multiplier: 21.0,
+          description:
+            "Punch for 2100% damage. Lightning deals 900% (not included).",
+        },
+        thunderslam: {
+          name: "Thunderslam (Special)",
+          icon: "../images/Skills/Loader/Thunderslam.png",
+          multiplier: 20.0,
+          description: "Slam your fists down for 2000% damage.",
+        },
+        m551Pylon: {
+          name: "M551 Pylon (Special)",
+          icon: "../images/Skills/Loader/M551_Pylon.png",
+          multiplier: 1.0,
+          description: "Zap up to 6 enemies for 100% damage per tick.",
+        },
+      };
+
+      let selectedSkill = null;
+
+      const elements = {
+        levelSlider: document.getElementById("level"),
+        speedBuffSlider: document.getElementById("speed-buff"),
+        speedBuffDisplay: document.getElementById("speed-buff-display"),
+        skillGrid: document.getElementById("skill-grid"),
+        activeSkillDisplay: document.getElementById("active-skill"),
+        levelDisplay: document.getElementById("level-display"),
+        baseDamageDisplay: document.getElementById("base-damage-display"),
+        calculateBtn: document.getElementById("calculate-btn"),
+        damageItemGrid: document.getElementById("damage-item-grid"),
+        selectedDamageItemsDisplay: document.getElementById(
+          "selected-damage-items"
+        ),
+        result: document.getElementById("result"),
+      };
+
+      function initSkillGrid() {
+        elements.skillGrid.innerHTML = "";
+        Object.entries(skills).forEach(([id, skill]) => {
+          const tile = document.createElement("div");
+          tile.className = `skill-tile ${selectedSkill === id ? "active" : ""}`;
+          tile.innerHTML = `
+            <img src="${skill.icon}" alt="${skill.name}" />
+            <span>${skill.name}</span>
+          `;
+          tile.addEventListener("click", () => {
+            selectedSkill = id;
+            updateSkillDisplay();
+            initSkillGrid();
+          });
+          elements.skillGrid.appendChild(tile);
+        });
+      }
+
+      function updateSkillDisplay() {
+        if (selectedSkill) {
+          const skill = skills[selectedSkill];
+          elements.activeSkillDisplay.innerHTML = `
+      <img src="${skill.icon}" class="active-skill-icon">
+      <div>
+        <h4>${skill.name}</h4>
+        <p>${skill.description}</p>
+      </div>
+    `;
+        } else {
+          elements.activeSkillDisplay.innerHTML = `<p>No skill selected</p>`;
+        }
+      }
+
+      function calculateDamage() {
+        if (!selectedSkill) {
+          elements.result.innerHTML = `<p class="error">Please select a skill.</p>`;
+          return;
+        }
+
+        const level = parseInt(elements.levelSlider.value);
+        const speedBuff = parseInt(elements.speedBuffSlider.value);
+        const skill = skills[selectedSkill];
+        const baseDamage = 12 + 2.4 * (level - 1);
+        const skillDamage = baseDamage * skill.multiplier;
+
+        let itemMultiplier = 1;
+        const modifiers = [];
+
+        Object.entries(selectedDamageItems).forEach(([id, data]) => {
+          if (!data.count || data.count <= 0) return;
+          const item = damageItems[id];
+          const mult = calculateItemMultiplier(item, data.count);
+          itemMultiplier *= mult;
+          modifiers.push(
+            `${item.name}${data.count > 1 ? ` ×${data.count}` : ""}`
+          );
+        });
+
+        const preCrit = skillDamage * itemMultiplier;
+        const speedMultiplier = 1 + speedBuff / 100;
+        const crit = preCrit * 2;
+        const moveBuff = preCrit * speedMultiplier;
+        const moveBuffCrit = crit * speedMultiplier;
+
+        const isBandTrigger = skill.multiplier >= 4;
+        const runaldBonus =
+          isBandTrigger && selectedDamageItems.runaldsBand?.count
+            ? baseDamage * 2.5
+            : 0;
+        const kjaroBonus =
+          isBandTrigger && selectedDamageItems.kjarosBand?.count
+            ? baseDamage * 3.0
+            : 0;
+
+        const totalModifiers = modifiers.join(" × ") || "None";
+
+        const resultHTML = `
+          <div class="results-card">
+            <h3>Level ${level} Loader</h3>
+            <div class="skill-used">
+              <img src="${skill.icon}" width="28" />
+              <strong>${skill.name}</strong>
+            </div>
+
+            <div class="damage-section"><h4>Non-Crit Hit</h4>
+              <p class="damage-value">${Math.round(
+                preCrit + runaldBonus + kjaroBonus
+              ).toLocaleString()} Damage</p></div>
+
+            <div class="damage-section"><h4>Crit Hit</h4>
+              <p class="damage-value">${Math.round(
+                crit + runaldBonus + kjaroBonus
+              ).toLocaleString()} Damage</p></div>
+
+            <div class="damage-section"><h4>Movement Buff Hit</h4>
+              <p class="damage-value">${Math.round(
+                moveBuff + runaldBonus + kjaroBonus
+              ).toLocaleString()} Damage</p></div>
+
+            <div class="damage-section"><h4>Movement Buff Crit</h4>
+              <p class="damage-value">${Math.round(
+                moveBuffCrit + runaldBonus + kjaroBonus
+              ).toLocaleString()} Damage</p></div>
+
+            <div class="damage-breakdown">
+              <p>Base: ${baseDamage.toFixed(1)} × ${
+          skill.multiplier
+        } (Skill Multiplier)</p>
+              <p>Multipliers: ${totalModifiers}</p>
+              <p>Total Multiplier: ×${itemMultiplier.toFixed(2)}</p>
+              <p>Pre-Crit Damage: ${Math.round(preCrit).toLocaleString()}</p>
+              ${
+                isBandTrigger && (runaldBonus || kjaroBonus)
+                  ? `<p>Runald’s Bonus: ${Math.round(
+                      runaldBonus
+                    ).toLocaleString()} | Kjaro’s Bonus: ${Math.round(
+                      kjaroBonus
+                    ).toLocaleString()}</p>`
+                  : ""
+              }
+              <p>Speed Buff: ${speedBuff}% → ×${speedMultiplier.toFixed(2)}</p>
+            </div>
+          </div>
+        `;
+
+        elements.result.innerHTML = resultHTML;
+      }
+
+      elements.levelSlider.addEventListener("input", () => {
+        const level = parseInt(elements.levelSlider.value);
+        elements.levelDisplay.textContent = level;
+        elements.baseDamageDisplay.textContent = (
+          12 +
+          2.4 * (level - 1)
+        ).toFixed(1);
+      });
+
+      elements.speedBuffSlider.addEventListener("input", () => {
+        elements.speedBuffDisplay.textContent = `${elements.speedBuffSlider.value}%`;
+      });
+
+      elements.calculateBtn.addEventListener("click", calculateDamage);
+
+      // Init
+      initSkillGrid();
+      initDamageItemGrid();
+      updateDamageItemDisplay();
+      elements.levelDisplay.textContent = elements.levelSlider.value;
+      elements.baseDamageDisplay.textContent = (
+        12 +
+        2.4 * (parseInt(elements.levelSlider.value) - 1)
+      ).toFixed(1);
+      elements.speedBuffDisplay.textContent = `${elements.speedBuffSlider.value}%`;
+
+      document.getElementById("reset-btn").addEventListener("click", () => {
+        // Reset level and speed buff sliders
+        elements.levelSlider.value = 20;
+        elements.speedBuffSlider.value = 0;
+
+        elements.levelDisplay.textContent = "20";
+        elements.baseDamageDisplay.textContent = (12 + 2.4 * (20 - 1)).toFixed(
+          1
+        );
+        elements.speedBuffDisplay.textContent = "0%";
+
+        // Clear skill selection
+        selectedSkill = null;
+        updateSkillDisplay();
+        initSkillGrid();
+
+        // Clear item selections
+        Object.keys(selectedDamageItems).forEach(
+          (key) => delete selectedDamageItems[key]
+        );
+        updateDamageItemDisplay();
+        initDamageItemGrid();
+
+        // Clear result output
+        elements.result.innerHTML = "";
+      });
+
+      function generateShareLink() {
+        const level = elements.levelSlider.value;
+        const skill = selectedSkill || "";
+        const items = Object.entries(selectedDamageItems)
+          .filter(([_, d]) => d.count > 0)
+          .map(([id, d]) => `${id}:${d.count}`)
+          .join(",");
+
+        const params = new URLSearchParams({
+          level,
+          skill,
+          items,
+        });
+
+        const url = `${window.location.origin}${
+          window.location.pathname
+        }?${params.toString()}`;
+        document.getElementById("share-url").value = url;
+      }
+
+      document
+        .getElementById("share-build")
+        .addEventListener("click", generateShareLink);
+
+      function loadBuildFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        const level = parseInt(params.get("level")) || 20;
+        const skill = params.get("skill") || null;
+        const items = params.get("items");
+
+        elements.levelSlider.value = level;
+        elements.levelDisplay.textContent = level;
+        elements.baseDamageDisplay.textContent = (
+          12 +
+          2.4 * (level - 1)
+        ).toFixed(1);
+
+        selectedSkill = skill;
+        if (items) {
+          selectedDamageItems = {};
+          items.split(",").forEach((pair) => {
+            const [id, count] = pair.split(":");
+            if (damageItems[id]) {
+              selectedDamageItems[id] = {
+                item: damageItems[id],
+                count: parseInt(count),
+              };
+            }
+          });
+        }
+
+        updateSkillDisplay();
+        initSkillGrid();
+        updateDamageItemDisplay();
+        initDamageItemGrid();
+      }
+
+      loadBuildFromURL();
+    </script>
+  </body>
+</html>

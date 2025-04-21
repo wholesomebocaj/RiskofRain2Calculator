@@ -1,0 +1,121 @@
+/* ===================================================
+   🌌 MAIN MENU (INDEX PAGE) STYLES
+=================================================== */
+
+/* ----- Global Reset for Homepage ----- */
+body {
+    margin: 0;
+    padding: 0;
+    background: #0a0e1a;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #e0e0e0;
+  }
+  
+  /* ===================================================
+     🧭 HOMEPAGE NAVBAR
+  =================================================== */
+  .index-navbar {
+    background: linear-gradient(145deg, #0f1a2e, #111c30);
+    padding: 30px 40px;
+    text-align: center;
+    border-bottom: 3px solid #ff9f43;
+    box-shadow: 0 4px 12px rgba(255, 159, 67, 0.15);
+  }
+  
+  .index-navbar h1 {
+    font-size: 2.6rem;
+    color: #ff9f43;
+    text-shadow: 0 0 15px rgba(255, 159, 67, 0.4);
+    margin: 0;
+  }
+  
+  /* ===================================================
+     💠 SURVIVOR SELECTION GRID
+  =================================================== */
+  .index-survivor-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3rem;
+    padding: 4rem 2rem;
+  }
+  
+  /* ===================================================
+     🧍 SURVIVOR CARD STYLE
+  =================================================== */
+  .index-survivor-card {
+    background: linear-gradient(145deg, #16213e, #0f3460);
+    border-radius: 20px;
+    padding: 2rem;
+    width: 220px;
+    text-align: center;
+    text-decoration: none;
+    color: #e0e0e0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .index-survivor-card:hover {
+    transform: scale(1.07);
+    box-shadow: 0 12px 25px rgba(255, 159, 67, 0.35);
+  }
+  
+  .index-survivor-card img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .index-survivor-card:hover img {
+    transform: rotate(6deg) scale(1.1);
+  }
+  
+  .index-survivor-card h2 {
+    font-size: 1.4rem;
+    margin: 0;
+    color: #ffb677;
+    text-shadow: 0 0 10px rgba(255, 182, 119, 0.25);
+  }
+  
+  /* ===================================================
+     📱 RESPONSIVE FALLBACK
+  =================================================== */
+  @media (max-width: 600px) {
+    .index-survivor-card {
+      width: 100%;
+    }
+  
+    .index-survivor-grid {
+      padding: 2rem 1rem;
+      gap: 2rem;
+    }
+  
+    .index-navbar h1 {
+      font-size: 2rem;
+    }
+  }
+  
+  /* ===================================================
+   ✨ THEMED HOVER GLOWS
+=================================================== */
+
+/* Railgunner - Purple Glow */
+.index-survivor-card.railgunner:hover {
+    box-shadow: 0 12px 25px rgba(138, 43, 226, 0.35);
+  }
+  .index-survivor-card.railgunner:hover img {
+    filter: drop-shadow(0 0 12px rgba(138, 43, 226, 0.6));
+  }
+  
+  /* Loader - Red Glow */
+  .index-survivor-card.loader:hover {
+    box-shadow: 0 12px 25px rgba(255, 79, 79, 0.35);
+  }
+  .index-survivor-card.loader:hover img {
+    filter: drop-shadow(0 0 12px rgba(255, 79, 79, 0.6));
+  }
+  
