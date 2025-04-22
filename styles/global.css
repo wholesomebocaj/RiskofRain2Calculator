@@ -1,7 +1,7 @@
 html {
   transform: scale(0.9);
   transform-origin: top left;
-  width: 111.11%; /* to prevent right-side overflow */
+  width: 111.11%;
 }
 
 :root {
@@ -24,9 +24,9 @@ body {
   line-height: 1.6;
 }
 
-
-
-/* GLOBAL FORM CONTROLS */
+/* ----------------------------------------------------
+   FORM CONTROLS
+----------------------------------------------------- */
 input[type="range"],
 input[type="number"],
 select,
@@ -40,26 +40,34 @@ input[type="text"] {
   font-size: 1rem;
 }
 
-/* GLOBAL BUTTONS */
+/* ----------------------------------------------------
+   SHARED BUTTONS (logic & layout only)
+----------------------------------------------------- */
+button,
+select,
+.button-style,
 .calculate-btn,
 .secondary-btn,
 .reset-btn,
 #save-build,
 #load-build {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   padding: 1rem;
   font-size: 1.1rem;
   font-weight: bold;
-  border-radius: 6px;
-  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
-/* SPECIFIC STYLES */
+/* ----------------------------------------------------
+   DEFAULT COLORS (fallback or index pages)
+----------------------------------------------------- */
 .calculate-btn {
   background: linear-gradient(135deg, var(--accent), var(--accent-dark));
   color: var(--text-dark);
@@ -67,39 +75,36 @@ input[type="text"] {
 
 .calculate-btn:hover {
   transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 159, 67, 0.6); /* uses global --accent */
 }
 
 .secondary-btn {
   background: #6246ea;
   color: white;
   border: 1px solid #7f5af0;
-  margin-top: 0.5rem;
-}
-
-.secondary-btn:hover {
-  background: #7157ec;
 }
 
 .reset-btn {
   background: transparent;
   color: var(--text-light);
   border: 1px solid var(--accent);
-  margin-top: 0.5rem;
 }
 
-.reset-btn:hover {
-  background-color: var(--accent);
-  color: #fff;
+button:hover,
+.button-style:hover,
+.reset-btn:hover,
+.secondary-btn:hover,
+#save-build:hover,
+#load-build:hover {
+  transform: scale(1.02);
 }
 
 #save-build {
   background: #2e2e70;
   color: white;
-  margin-top: 1rem;
 }
 
 #load-build {
-  margin-top: 0.8rem;
   background: #122449;
   color: white;
 }
@@ -113,11 +118,21 @@ input[type="text"] {
   width: 96%;
 }
 
+/* BUTTON LAYOUT ONLY */
+.button-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* ----------------------------------------------------
+   NAVBAR LINKS
+----------------------------------------------------- */
 .nav-links {
   display: flex;
   gap: 16px;
 }
-
 .nav-link {
   color: var(--accent);
   text-decoration: none;
@@ -125,7 +140,6 @@ input[type="text"] {
   font-size: 1.1rem;
   transition: color 0.2s ease;
 }
-
 .nav-link:hover {
   color: #ffa94d;
   text-decoration: underline;

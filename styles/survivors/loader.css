@@ -1,3 +1,37 @@
+/* ============================================================================
+   Loader Theme (Red Accent)
+============================================================================ */
+/* Base red glow on all buttons */
+.button-style,
+button:not(#calculate-btn),
+#save-build,
+#load-build,
+#reset-btn,
+#share-build {
+  background: #2B1017 !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 0 6px rgba(255, 79, 79, 0.4); /* subtle red glow */
+  transition: all 0.25s ease-in-out;
+}
+
+/* 🔴 Red hover effect (excluding calculate) */
+.button-style:hover,
+button:not(#calculate-btn):hover,
+#save-build:hover,
+#load-build:hover,
+#reset-btn:hover,
+#share-build:hover {
+  background: var(--loader-accent-dark) !important;
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 79, 79, 0.6); /* stronger red glow */
+  color: white !important;
+}
+
+
+/* ============================================================================
+   LOADER DAMAGE CALCULATOR
+============================================================================ */
 .loader-calculator {
   --loader-accent: #ff4f4f;
   --loader-dark: #8b0000;
@@ -10,7 +44,6 @@
   overflow: visible;
 }
 
-
 .loader-calculator .settings-panel {
   width: 50%;
   min-width: 700px;
@@ -21,7 +54,6 @@
   max-height: calc(140vh - 20px);
   overflow-y: auto;
 }
-
 
 .loader-calculator .output-panel {
   width: 50%;
@@ -34,7 +66,6 @@
   height: max-content;
   align-self: flex-start;
 }
-
 
 .loader-calculator .input-group {
   margin-bottom: 30px;
@@ -281,7 +312,7 @@ input[type="range"]::-moz-range-thumb:hover {
 
 .sticky-panel {
   position: sticky;
-  top: 20px;        /* same offset you used on Railgunner */
+  top: 20px; /* same offset you used on Railgunner */
   align-self: flex-start;
   height: max-content;
 }

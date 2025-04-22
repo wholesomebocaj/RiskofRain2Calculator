@@ -12,6 +12,7 @@
       <a href="../index.html" class="nav-back">
         <span class="arrow">←</span> Back to Survivors
       </a>
+
       <div class="nav-center">
         <img
           src="../images/Survivor_Icons/railgunner-icon.png"
@@ -20,7 +21,10 @@
         />
         <h1 class="nav-title">Railgunner Damage Calculator</h1>
       </div>
-      <div class="nav-filler"></div>
+
+      <div class="nav-filler nav-links">
+        <a href="../savedBuilds.html" class="nav-link">Saved Builds</a>
+      </div>
     </div>
 
     <div class="calculator railgunner-calculator">
@@ -62,9 +66,9 @@
 
           <button id="reset-btn" class="button-style">🔄 Reset</button>
 
-          <button id="save-build" class="square-button">💾 Save Build</button>
+          <button id="save-build" class="button-style">💾 Save Build</button>
 
-          <select id="load-build" class="square-button">
+          <select id="load-build" class="button-style">
             <option value="">📂 Load Build</option>
           </select>
 
@@ -473,7 +477,61 @@
       initDamageItemGrid();
       updateDamageItemDisplay();
 
-      
+      function getBuildKey(name = "") {
+        return `ror2-railgunner-${selectedSkill || "noskill"}-${name}`;
+      }
+
+      function saveBuild() {
+        const name = prompt("Name this build:");
+        if (!name) return;
+
+        const build = {
+          level: elements.levelSlider.value,
+          skill: selectedSkill,
+          items: selectedDamageItems,
+        };
+
+        localStorage.setItem(getBuildKey(name), JSON.stringify(build));
+        alert("✅ Build saved!");
+      }
+
+      document
+        .getElementById("save-build")
+        .addEventListener("click", saveBuild);
+
+      function loadBuildFromKey(key) {
+        const data = JSON.parse(localStorage.getItem(key));
+        if (!data) return;
+
+        elements.levelSlider.value = data.level;
+        selectedSkill = data.skill;
+        selectedDamageItems = data.items || {};
+
+        elements.levelSlider.dispatchEvent(new Event("input"));
+        updateSkillDisplay();
+        initSkillGrid();
+        updateDamageItemDisplay();
+        initDamageItemGrid();
+      }
+
+      function updateLoadDropdown() {
+        const select = document.getElementById("load-build");
+        select.innerHTML = `<option value="">📂 Load Build</option>`;
+        Object.keys(localStorage).forEach((key) => {
+          if (key.startsWith("ror2-railgunner")) {
+            const label = key
+              .replace("ror2-railgunner-", "")
+              .replace(/-/g, " ");
+            select.innerHTML += `<option value="${key}">${label}</option>`;
+          }
+        });
+      }
+
+      document.getElementById("load-build").addEventListener("change", (e) => {
+        if (e.target.value) loadBuildFromKey(e.target.value);
+      });
+
+      updateLoadDropdown();
     </script>
   </body>
 </html>

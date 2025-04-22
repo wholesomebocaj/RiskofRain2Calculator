@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="../styles/navbar.css" />
   </head>
   <body>
-    <!-- sticky navbar -->
     <div class="navbar enhanced-navbar">
       <a href="../index.html" class="nav-back">
         <span class="arrow">←</span> Back to Survivors
       </a>
+
       <div class="nav-center">
         <img
           src="../images/Survivor_Icons/loader-icon.png"
@@ -22,9 +22,11 @@
         />
         <h1 class="nav-title">Loader Damage Calculator</h1>
       </div>
-      <div class="nav-filler"></div>
-    </div>
 
+      <div class="nav-filler nav-links">
+        <a href="../savedBuilds.html" class="nav-link">Saved Builds</a>
+      </div>
+    </div>
     <!-- main flex container -->
     <div class="calculator loader-calculator">
       <!-- LEFT panel: scrollable settings -->
@@ -69,29 +71,31 @@
           </div>
         </div>
 
-        <!-- action buttons -->
+        <!-- Buttons -->
         <div class="button-row">
-          <button id="calculate-btn" class="calculate-btn">
+          <button id="calculate-btn" class="calculate-btn loader-calculate-btn">
             Calculate Damage
           </button>
-          <button id="reset-btn" class="reset-btn">🔄 Reset</button>
-        </div>
 
-        <div class="build-row">
-          <button id="save-build" class="secondary-btn">💾 Save Build</button>
-          <select id="load-build" class="secondary-btn">
+          <button id="reset-btn" class="button-style">🔄 Reset</button>
+
+          <button id="save-build" class="button-style">💾 Save Build</button>
+
+          <select id="load-build" class="button-style">
             <option value="">📂 Load Build</option>
           </select>
-        </div>
 
-        <div class="share-row">
-          <button id="share-build" class="secondary-btn">🔗 Share Build</button>
-          <input
-            type="text"
-            id="share-url"
-            readonly
-            placeholder="Your build link will appear here"
-          />
+          <div class="share-row">
+            <button id="share-build" class="button-style">
+              🔗 Share Build
+            </button>
+            <input
+              type="text"
+              id="share-url"
+              readonly
+              placeholder="Your build link will appear here"
+            />
+          </div>
         </div>
       </div>
 
@@ -471,8 +475,6 @@
       const urlParams = new URLSearchParams(window.location.search);
       const loadKey = urlParams.get("load");
       if (loadKey) loadBuildFromKey(loadKey);
-
-      
     </script>
   </body>
 </html>
