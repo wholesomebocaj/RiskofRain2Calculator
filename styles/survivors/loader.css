@@ -263,3 +263,65 @@ input[type="range"]::-moz-range-thumb:hover {
 .loader-calculator input[type="range"] {
   accent-color: var(--loader-accent);
 }
+
+/* make the navbar stick to the top */
+.enhanced-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--bg-nav); /* or same bg you used on Railgunner */
+}
+
+/* flex‐center across */
+.enhanced-navbar .nav-back,
+.enhanced-navbar .nav-center,
+.enhanced-navbar .nav-filler {
+  display: flex;
+  align-items: center;
+}
+
+.enhanced-navbar .nav-back {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  color: var(--text-light);
+  text-decoration: none;
+}
+
+.enhanced-navbar .nav-center {
+  flex: none;
+  gap: 0.5rem;
+}
+
+.enhanced-navbar .nav-title {
+  margin: 0;
+  color: var(--text-light);
+  font-size: 1.25rem;
+}
+
+.enhanced-navbar .nav-filler {
+  flex: 1;
+}
+
+.loader-calculator {
+  display: flex;
+  align-items: flex-start; /* so the sticky panel doesn't stretch */
+}
+
+.sticky-panel {
+  position: sticky;
+  top: 20px;        /* same offset you used on Railgunner */
+  align-self: flex-start;
+  height: max-content;
+}
+
+/* reuse the same railgunner styles */
+.calculator {
+  display: flex;
+  align-items: flex-start;
+}
+.output-panel {
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
+  height: max-content;
+}
