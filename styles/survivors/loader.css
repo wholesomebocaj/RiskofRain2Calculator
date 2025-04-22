@@ -3,28 +3,38 @@
   --loader-dark: #8b0000;
   --item-bg: rgba(96, 15, 15, 0.3);
   display: flex;
+  align-items: flex-start;
   width: 100%;
   min-width: 1400px;
-  overflow: hidden;
   background: #0a0e1a;
+  overflow: visible;
 }
+
 
 .loader-calculator .settings-panel {
   width: 50%;
+  min-width: 700px;
   padding: 30px;
   border-right: 1px solid rgba(255, 79, 79, 0.3);
   background: rgba(10, 14, 26, 0.95);
-  min-width: 700px;
   box-sizing: border-box;
+  max-height: calc(140vh - 20px);
+  overflow-y: auto;
 }
+
 
 .loader-calculator .output-panel {
   width: 50%;
+  min-width: 700px;
   padding: 30px;
   background: rgba(96, 15, 15, 0.1);
-  min-width: 700px;
   box-sizing: border-box;
+  position: sticky;
+  top: 20px;
+  height: max-content;
+  align-self: flex-start;
 }
+
 
 .loader-calculator .input-group {
   margin-bottom: 30px;
@@ -95,24 +105,24 @@
 .loader-calculator .results-card {
   background: rgba(96, 15, 15, 0.3);
   border-radius: 12px;
-  padding: 30px;
+  padding: 15px;
   color: var(--text-light);
 }
 
 .loader-calculator .damage-section {
   margin: 25px 0;
-  padding: 20px;
+  padding: 10px;
   background: rgba(96, 15, 15, 0.25);
   border-radius: 10px;
 }
 
 .loader-calculator .damage-section h4 {
   color: var(--loader-accent);
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }
 
 .loader-calculator .damage-value {
-  font-size: 2.8rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: var(--loader-accent);
   margin: 0.5rem 0;
@@ -262,44 +272,6 @@ input[type="range"]::-moz-range-thumb:hover {
 
 .loader-calculator input[type="range"] {
   accent-color: var(--loader-accent);
-}
-
-/* make the navbar stick to the top */
-.enhanced-navbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: var(--bg-nav); /* or same bg you used on Railgunner */
-}
-
-/* flex‐center across */
-.enhanced-navbar .nav-back,
-.enhanced-navbar .nav-center,
-.enhanced-navbar .nav-filler {
-  display: flex;
-  align-items: center;
-}
-
-.enhanced-navbar .nav-back {
-  flex: 1;
-  padding: 0.5rem 1rem;
-  color: var(--text-light);
-  text-decoration: none;
-}
-
-.enhanced-navbar .nav-center {
-  flex: none;
-  gap: 0.5rem;
-}
-
-.enhanced-navbar .nav-title {
-  margin: 0;
-  color: var(--text-light);
-  font-size: 1.25rem;
-}
-
-.enhanced-navbar .nav-filler {
-  flex: 1;
 }
 
 .loader-calculator {

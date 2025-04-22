@@ -7,10 +7,21 @@
     <link rel="stylesheet" href="./styles/savedBuilds.css" />
   </head>
   <body>
-    <div class="navbar">
-      <a href="./index.html" class="nav-back">← Back to Main Menu</a>
-      <h1 class="nav-title">Saved Builds</h1>
-      <div></div>
+    <div class="navbar enhanced-navbar">
+      <a href="../index.html" class="nav-back">← Back to Main Menu</a>
+
+      <div class="nav-center">
+        <!-- Survivor icon + title here -->
+      </div>
+
+      <div class="nav-filler nav-links">
+        <a href="../index.html" class="nav-link">🏠 Main Menu</a>
+        <a href="../components/savedBuilds.html" class="nav-link"
+          >💾 Saved Builds</a
+        >
+      </div>
+
+      
     </div>
 
     <div class="build-grid" id="build-list"></div>
@@ -22,7 +33,11 @@
           if (key.startsWith("ror2-")) {
             try {
               const data = JSON.parse(localStorage.getItem(key));
-              builds.push({ key, name: key.replace("ror2-", "").replace(/-/g, " "), ...data });
+              builds.push({
+                key,
+                name: key.replace("ror2-", "").replace(/-/g, " "),
+                ...data,
+              });
             } catch {}
           }
         }

@@ -5,6 +5,7 @@
     <title>Railgunner Calculator</title>
     <link rel="stylesheet" href="../styles/global.css" />
     <link rel="stylesheet" href="../styles/survivors/railgunner.css" />
+    <link rel="stylesheet" href="../styles/navbar.css" />
   </head>
   <body>
     <div class="navbar enhanced-navbar">
@@ -68,7 +69,9 @@
           </select>
 
           <div class="share-row">
-            <button id="share-build" class="button-style">🔗 Share Build</button>
+            <button id="share-build" class="button-style">
+              🔗 Share Build
+            </button>
             <input
               type="text"
               id="share-url"
@@ -194,7 +197,9 @@
         skillGrid: document.getElementById("skill-grid"),
         activeSkillDisplay: document.getElementById("active-skill"),
         damageItemGrid: document.getElementById("damage-item-grid"),
-        selectedDamageItemsDisplay: document.getElementById("selected-damage-items"),
+        selectedDamageItemsDisplay: document.getElementById(
+          "selected-damage-items"
+        ),
         resultDiv: document.getElementById("result"),
       };
 
@@ -244,7 +249,10 @@
             ${count > 0 ? `<span class="item-count">${count}</span>` : ""}`;
           tile.addEventListener("click", () => {
             selectedDamageItems[id] = selectedDamageItems[id]
-              ? { ...selectedDamageItems[id], count: selectedDamageItems[id].count + 1 }
+              ? {
+                  ...selectedDamageItems[id],
+                  count: selectedDamageItems[id].count + 1,
+                }
               : { item, count: 1 };
             updateDamageItemDisplay();
             initDamageItemGrid();
@@ -275,14 +283,17 @@
           .map(([id, d]) => ({ ...d.item, count: d.count, id }));
 
         if (!items.length) {
-          elements.selectedDamageItemsDisplay.innerHTML = "<p>No damage items selected</p>";
+          elements.selectedDamageItemsDisplay.innerHTML =
+            "<p>No damage items selected</p>";
           return;
         }
 
         elements.selectedDamageItemsDisplay.innerHTML = `
           <h4>Active Damage Buffs</h4>
           <div class="active-damage-items">
-            ${items.map(item => `
+            ${items
+              .map(
+                (item) => `
               <div class="active-damage-item" data-id="${item.id}">
                 <img src="${item.icon}" />
                 <span>${item.name} (${item.effect})</span>
@@ -292,22 +303,25 @@
                   <button class="increase-item">+</button>
                 </div>
               </div>
-            `).join("")}
+            `
+              )
+              .join("")}
           </div>`;
 
-        document.querySelectorAll(".increase-item").forEach(btn =>
-          btn.addEventListener("click", e => {
+        document.querySelectorAll(".increase-item").forEach((btn) =>
+          btn.addEventListener("click", (e) => {
             const id = e.target.closest(".active-damage-item").dataset.id;
             selectedDamageItems[id].count++;
             updateDamageItemDisplay();
             initDamageItemGrid();
           })
         );
-        document.querySelectorAll(".decrease-item").forEach(btn =>
-          btn.addEventListener("click", e => {
+        document.querySelectorAll(".decrease-item").forEach((btn) =>
+          btn.addEventListener("click", (e) => {
             const id = e.target.closest(".active-damage-item").dataset.id;
             selectedDamageItems[id].count--;
-            if (selectedDamageItems[id].count <= 0) delete selectedDamageItems[id];
+            if (selectedDamageItems[id].count <= 0)
+              delete selectedDamageItems[id];
             updateDamageItemDisplay();
             initDamageItemGrid();
           })
@@ -326,32 +340,49 @@
         const totalSkill = base * skill.multiplier;
 
         let itemMultiplier = 1;
-        Object.values(selectedDamageItems).forEach(d =>
-          itemMultiplier *= calculateItemMultiplier(d.item, d.count)
+        Object.values(selectedDamageItems).forEach(
+          (d) => (itemMultiplier *= calculateItemMultiplier(d.item, d.count))
         );
 
-        const runaldBonus = (skill.multiplier >= 4 && selectedDamageItems.runaldsBand)
-          ? base * 2.5 : 0;
-        const kjaroBonus = (skill.multiplier >= 4 && selectedDamageItems.kjarosBand)
-          ? base * 3.0 : 0;
+        const runaldBonus =
+          skill.multiplier >= 4 && selectedDamageItems.runaldsBand
+            ? base * 2.5
+            : 0;
+        const kjaroBonus =
+          skill.multiplier >= 4 && selectedDamageItems.kjarosBand
+            ? base * 3.0
+            : 0;
 
-        const critChance = Math.min(1, (selectedDamageItems.glasses?.count || 0) * 0.1);
+        const critChance = Math.min(
+          1,
+          (selectedDamageItems.glasses?.count || 0) * 0.1
+        );
         const preCrit = totalSkill * itemMultiplier;
-        const regular = Math.round(preCrit * (1 - critChance) + preCrit * 2 * critChance + runaldBonus + kjaroBonus);
-        const weakPt  = Math.round(preCrit * 2.5 + runaldBonus + kjaroBonus);
+        const regular = Math.round(
+          preCrit * (1 - critChance) +
+            preCrit * 2 * critChance +
+            runaldBonus +
+            kjaroBonus
+        );
+        const weakPt = Math.round(preCrit * 2.5 + runaldBonus + kjaroBonus);
 
-        showResult({
-          base: base.toFixed(1),
-          skill,
-          critChance,
-          regularDamage: regular,
-          weakPointDamage: weakPt,
-          preCrit: Math.round(preCrit),
-          modifiers: Object.entries(selectedDamageItems).map(([_,d])=>`${d.item.name}${d.count>1?`×${d.count}`:""}`),
-          totalMultiplier: itemMultiplier.toFixed(2),
-          runaldBonus: Math.round(runaldBonus),
-          kjaroBonus: Math.round(kjaroBonus)
-        }, level);
+        showResult(
+          {
+            base: base.toFixed(1),
+            skill,
+            critChance,
+            regularDamage: regular,
+            weakPointDamage: weakPt,
+            preCrit: Math.round(preCrit),
+            modifiers: Object.entries(selectedDamageItems).map(
+              ([_, d]) => `${d.item.name}${d.count > 1 ? `×${d.count}` : ""}`
+            ),
+            totalMultiplier: itemMultiplier.toFixed(2),
+            runaldBonus: Math.round(runaldBonus),
+            kjaroBonus: Math.round(kjaroBonus),
+          },
+          level
+        );
       }
 
       // render results
@@ -367,7 +398,13 @@
             <div class="damage-section">
               <h4>Regular Hit</h4>
               <p class="damage-value">${r.regularDamage.toLocaleString()} Damage</p>
-              ${r.critChance>0?`<p class="damage-note">Includes ${Math.round(r.critChance*100)}% crit chance</p>`:""}
+              ${
+                r.critChance > 0
+                  ? `<p class="damage-note">Includes ${Math.round(
+                      r.critChance * 100
+                    )}% crit chance</p>`
+                  : ""
+              }
             </div>
 
             <div class="damage-section weak-point-section">
@@ -377,10 +414,14 @@
 
             <div class="damage-breakdown">
               <p>Base: ${r.base} × ${r.skill.multiplier}×</p>
-              <p>Multipliers: ${r.modifiers.join(" × ")||"None"}</p>
+              <p>Multipliers: ${r.modifiers.join(" × ") || "None"}</p>
               <p>Total Multiplier: ×${r.totalMultiplier}</p>
               <p>Pre‑Crit Damage: ${r.preCrit.toLocaleString()}</p>
-              ${(r.runaldBonus||r.kjaroBonus)?`<p>Burst: Runald’s +${r.runaldBonus}, Kjaro’s +${r.kjaroBonus}</p>`:""}
+              ${
+                r.runaldBonus || r.kjaroBonus
+                  ? `<p>Burst: Runald’s +${r.runaldBonus}, Kjaro’s +${r.kjaroBonus}</p>`
+                  : ""
+              }
             </div>
           </div>`;
       }
@@ -395,9 +436,11 @@
         selectedDamageItems = {};
         elements.levelSlider.value = 20;
         elements.levelDisplay.textContent = 20;
-        elements.baseDamageDisplay.textContent = (12+2.4*19).toFixed(1);
-        updateSkillDisplay(); initSkillGrid();
-        updateDamageItemDisplay(); initDamageItemGrid();
+        elements.baseDamageDisplay.textContent = (12 + 2.4 * 19).toFixed(1);
+        updateSkillDisplay();
+        initSkillGrid();
+        updateDamageItemDisplay();
+        initDamageItemGrid();
         elements.resultDiv.innerHTML = "";
         document.getElementById("load-build").selectedIndex = 0;
       });
@@ -405,26 +448,32 @@
       // share link
       document.getElementById("share-build").addEventListener("click", () => {
         const lvl = elements.levelSlider.value;
-        const sk  = selectedSkill||"";
+        const sk = selectedSkill || "";
         const items = Object.entries(selectedDamageItems)
-          .filter(([,d])=>d.count>0)
-          .map(([id,d])=>`${id}:${d.count}`).join(",");
+          .filter(([, d]) => d.count > 0)
+          .map(([id, d]) => `${id}:${d.count}`)
+          .join(",");
         const params = new URLSearchParams({ level: lvl, skill: sk, items });
-        document.getElementById("share-url").value =
-          `${location.origin}${location.pathname}?${params}`;
+        document.getElementById(
+          "share-url"
+        ).value = `${location.origin}${location.pathname}?${params}`;
       });
 
       // dropdown save/load omitted for brevity...
       elements.levelSlider.addEventListener("input", () => {
         const lv = +elements.levelSlider.value;
         elements.levelDisplay.textContent = lv;
-        elements.baseDamageDisplay.textContent = (12+2.4*(lv-1)).toFixed(1);
+        elements.baseDamageDisplay.textContent = (12 + 2.4 * (lv - 1)).toFixed(
+          1
+        );
       });
 
       elements.calculateBtn.addEventListener("click", calculateDamage);
       initSkillGrid();
       initDamageItemGrid();
       updateDamageItemDisplay();
+
+      
     </script>
   </body>
 </html>
