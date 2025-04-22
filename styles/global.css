@@ -1,3 +1,9 @@
+html {
+  transform: scale(0.9);
+  transform-origin: top left;
+  width: 111.11%; /* to prevent right-side overflow */
+}
+
 :root {
   --bg-dark: #0a0e1a;
   --bg-card: #16213e;

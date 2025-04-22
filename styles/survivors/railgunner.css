@@ -495,3 +495,100 @@
   margin-top: 16px;
   align-items: center;
 }
+
+.button-style {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--railgunner-accent), var(--railgunner-dark));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.4);
+}
+
+.button-style:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+}
+
+select.button-style {
+  appearance: none;
+  background: linear-gradient(135deg, var(--railgunner-accent), var(--railgunner-dark));
+  color: white;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  padding: 14px;
+  background-image: url('../images/chevron-down.svg');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px;
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.4);
+}
+
+
+
+.calculate-btn,
+.button-style {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--railgunner-accent), var(--railgunner-dark));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.4);
+}
+
+.calculate-btn:hover,
+.button-style:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+}
+
+#share-url {
+  padding: 12px 16px;
+  background: #0f1528;
+  color: #ccc;
+  border: 1px solid var(--railgunner-accent);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-top: 12px;
+}
+
+.square-button {
+  width: 160px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--railgunner-accent), var(--railgunner-dark));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.4);
+}
+
+.square-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+}
+
+select.square-button {
+  appearance: none;
+  padding-right: 2rem;
+  background-image: url('../images/chevron-down.svg');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 14px;
+}

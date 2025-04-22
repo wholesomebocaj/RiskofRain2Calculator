@@ -1,0 +1,141 @@
+body {
+  background: #0a0e1a;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  padding: 20px 40px;
+  background: #0f111f;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid orange;
+}
+
+.nav-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: orange;
+}
+
+.nav-back {
+  color: #e0e0e0;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.saved-builds-container {
+  padding: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.build-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 0 10px rgba(255, 165, 0, 0.2);
+}
+
+.build-card h3 {
+  margin-top: 0;
+  color: orange;
+  font-size: 1.2rem;
+}
+
+.build-card p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+}
+
+.build-card-buttons {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.load-btn,
+.delete-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.load-btn {
+  background: #8a2be2;
+  color: white;
+}
+
+.load-btn:hover {
+  background: #9d3cfc;
+}
+
+.build-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 2rem;
+}
+
+.build-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  color: #fff;
+  transition: all 0.25s;
+}
+
+.build-card:hover {
+  background: rgba(255, 165, 0, 0.05);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(255, 165, 0, 0.2);
+}
+
+.build-card h3 {
+  color: #ffa500;
+  margin-top: 0;
+}
+
+.build-card .button-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.build-card .load-btn,
+.build-card .delete-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.load-btn {
+  background: #ffa500;
+  color: #000;
+}
+
+.load-btn:hover {
+  background: #ffbb33;
+}
+
+.delete-btn {
+  background: #444;
+  color: #fff;
+}
+
+.delete-btn:hover {
+  background: #cc3333;
+}

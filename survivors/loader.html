@@ -475,6 +475,11 @@
       });
 
       updateLoadDropdown();
+
+      // Load build from URL if provided
+      const urlParams = new URLSearchParams(window.location.search);
+      const loadKey = urlParams.get("load");
+      if (loadKey) loadBuildFromKey(loadKey);
     </script>
   </body>
 </html>

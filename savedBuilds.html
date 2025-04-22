@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Saved Builds</title>
+    <link rel="stylesheet" href="./styles/global.css" />
+    <link rel="stylesheet" href="./styles/savedBuilds.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="./index.html" class="nav-back">← Back to Main Menu</a>
+      <h1 class="nav-title">Saved Builds</h1>
+      <div></div>
+    </div>
+
+    <div class="build-grid" id="build-list"></div>
+
+    <script>
+      function getAllBuilds() {
+        const builds = [];
+        for (const key in localStorage) {
+          if (key.startsWith("ror2-")) {
+            try {
+              const data = JSON.parse(localStorage.getItem(key));
+              builds.push({ key, name: key.replace("ror2-", "").replace(/-/g, " "), ...data });
+            } catch {}
+          }
+        }
+        return builds;
+      }
+
+      function renderBuilds() {
+        const container = document.getElementById("build-list");
+        container.innerHTML = "";
+
+        getAllBuilds().forEach((build) => {
+          const card = document.createElement("div");
+          card.className = "build-card";
+          card.innerHTML = `
+            <h3>${build.name}</h3>
+            <p><strong>Survivor:</strong> ${
+              build.key.includes("railgunner")
+                ? "Railgunner"
+                : build.key.includes("loader")
+                ? "Loader"
+                : "Unknown"
+            }</p>
+            <p><strong>Skill:</strong> ${build.skill || "None"}</p>
+            <p><strong>Level:</strong> ${build.level}</p>
+            <div class="button-row">
+              <button class="load-btn">Load</button>
+              <button class="delete-btn">Delete</button>
+            </div>
+          `;
+
+          card.querySelector(".load-btn").onclick = () => {
+            if (build.key.includes("railgunner")) {
+              window.location.href = `./survivors/railgunner.html?load=${build.key}`;
+            } else if (build.key.includes("loader")) {
+              window.location.href = `./survivors/loader.html?load=${build.key}`;
+            }
+          };
+
+          card.querySelector(".delete-btn").onclick = () => {
+            localStorage.removeItem(build.key);
+            renderBuilds();
+          };
+
+          container.appendChild(card);
+        });
+      }
+
+      renderBuilds();
+    </script>
+  </body>
+</html>

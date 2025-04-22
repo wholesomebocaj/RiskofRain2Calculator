@@ -61,13 +61,15 @@
             Calculate Damage
           </button>
 
-          <button id="save-build" class="secondary-btn">💾 Save Build</button>
+          <button id="reset-btn" class="button-style">🔄 Reset</button>
 
-          <select id="load-build" class="build-dropdown">
+          <button id="save-build" class="square-button">💾 Save Build</button>
+
+          <select id="load-build" class="square-button">
             <option value="">📂 Load Build</option>
           </select>
 
-          <button id="share-build" class="secondary-btn">🔗 Share Build</button>
+          <button id="share-build" class="square-button">🔗 Share Build</button>
 
           <input
             type="text"
@@ -76,8 +78,6 @@
             placeholder="Your build link will appear here"
             style="flex: 1; margin-top: 8px"
           />
-
-          <button id="reset-btn" class="reset-btn">Reset</button>
         </div>
       </div>
 
@@ -568,6 +568,11 @@
       }
 
       loadBuildFromURL();
+
+      // Load build from URL if provided
+      const urlParams = new URLSearchParams(window.location.search);
+      const loadKey = urlParams.get("load");
+      if (loadKey) loadBuildFromKey(loadKey);
     </script>
   </body>
 </html>
