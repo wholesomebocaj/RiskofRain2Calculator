@@ -27,6 +27,103 @@
       const imgName = name.replace(/\s+/g, '') + '-icon.png';
       icon.src = `../images/Survivor_Icons/${imgName}`;
       icon.alt = name;
+
+      const skillsData = {
+        Commando: [
+          'Double Tap (Primary)',
+          'Phase Round (Secondary)',
+          'Tactical Dive (Utility)',
+          'Suppressive Fire (Special)'
+        ],
+        Huntress: [
+          'Strafe (Primary)',
+          'Laser Glaive (Secondary)',
+          'Blink (Utility)',
+          'Arrow Rain (Special)'
+        ],
+        Bandit: [
+          'Burst (Primary)',
+          'Serrated Shiv (Secondary)',
+          'Smoke Bomb (Utility)',
+          'Lights Out (Special)'
+        ],
+        Artificer: [
+          'Flame Bolt (Primary)',
+          'Charged Nano-Bomb (Secondary)',
+          'Snapfreeze (Utility)',
+          'Flamethrower (Special)'
+        ],
+        'MUL-T': [
+          'Auto-Nailgun (Primary)',
+          'Blast Canister (Secondary)',
+          'Transport Mode (Utility)',
+          'Retool (Special)'
+        ],
+        Engineer: [
+          'Bouncing Grenades (Primary)',
+          'Pressure Mines (Secondary)',
+          'Bubble Shield (Utility)',
+          'TR12 Gauss Turret (Special)'
+        ],
+        Mercenary: [
+          'Laser Sword (Primary)',
+          'Whirlwind (Secondary)',
+          'Blinding Assault (Utility)',
+          'Eviscerate (Special)'
+        ],
+        REX: [
+          'Directive: Inject (Primary)',
+          'Seed Barrage (Secondary)',
+          'Tangling Growth (Utility)',
+          'Bramble Volley (Special)'
+        ],
+        Acrid: [
+          'Vicious Wounds (Primary)',
+          'Neurotoxin (Secondary)',
+          'Caustic Leap (Utility)',
+          'Epidemic (Special)'
+        ],
+        Heretic: [
+          'Hungering Gaze (Primary)',
+          'Slicing Maelstrom (Secondary)',
+          'Shadowfade (Utility)',
+          'Ruin (Special)'
+        ],
+        'Void Fiend': [
+          'Drown (Primary)',
+          'Corrosive Salvo (Secondary)',
+          'Trespass (Utility)',
+          'Suppress (Special)'
+        ],
+        Loader: [
+          'Knuckleboom (Primary)',
+          'Spiked Fist (Secondary)',
+          'Charged Gauntlet (Utility)',
+          'Thunderslam (Special)'
+        ],
+        Railgunner: [
+          'M99 Sniper (Primary)',
+          'XQR Smart Round (Secondary)',
+          'Concussion Device (Utility)',
+          'Supercharge (Special)'
+        ]
+      };
+
+      if (skillsData[name]) {
+        const container = document.getElementById('message').parentElement;
+        const header = document.createElement('h2');
+        header.textContent = 'Skills';
+        container.appendChild(header);
+
+        const list = document.createElement('ul');
+        list.className = 'skill-list';
+        skillsData[name].forEach((skill) => {
+          const li = document.createElement('li');
+          li.textContent = skill;
+          list.appendChild(li);
+        });
+        container.appendChild(list);
+      }
     </script>
   </body>
 </html>
