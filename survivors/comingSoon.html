@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Calculator Coming Soon</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="../styles/navbar.css" />
+  </head>
+  <body>
+    <div class="navbar enhanced-navbar">
+      <a href="../index.html" class="nav-back">
+        <span class="arrow">←</span> Back to Survivors
+      </a>
+      <div class="nav-center">
+        <img id="survivor-icon" class="nav-icon" />
+        <h1 class="nav-title" id="page-title"></h1>
+      </div>
+    </div>
+    <div style="padding:2rem;text-align:center;">
+      <p id="message">This survivor's calculator is coming soon.</p>
+    </div>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get('survivor') || 'Unknown';
+      document.getElementById('page-title').textContent = `${name} Calculator`;
+      const icon = document.getElementById('survivor-icon');
+      const imgName = name.replace(/\s+/g, '') + '-icon.png';
+      icon.src = `../images/Survivor_Icons/${imgName}`;
+      icon.alt = name;
+    </script>
+  </body>
+</html>
