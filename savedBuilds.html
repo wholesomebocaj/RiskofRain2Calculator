@@ -58,6 +58,14 @@
                 ? "Railgunner"
                 : build.key.includes("loader")
                 ? "Loader"
+                : build.key.includes("commando")
+                ? "Commando"
+                : build.key.includes("huntress")
+                ? "Huntress"
+                : build.key.includes("bandit")
+                ? "Bandit"
+                : build.key.includes("mult")
+                ? "MUL-T"
                 : "Unknown"
             }</p>
             <p><strong>Skill:</strong> ${build.skill || "None"}</p>
@@ -73,6 +81,14 @@
               window.location.href = `./survivors/railgunner.html?load=${build.key}`;
             } else if (build.key.includes("loader")) {
               window.location.href = `./survivors/loader.html?load=${build.key}`;
+            } else if (build.key.includes("commando")) {
+              window.location.href = `./survivors/commando.html?load=${build.key}`;
+            } else if (build.key.includes("huntress")) {
+              window.location.href = `./survivors/huntress.html?load=${build.key}`;
+            } else if (build.key.includes("bandit")) {
+              window.location.href = `./survivors/bandit.html?load=${build.key}`;
+            } else if (build.key.includes("mult")) {
+              window.location.href = `./survivors/mult.html?load=${build.key}`;
             }
           };
 

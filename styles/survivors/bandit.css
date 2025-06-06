@@ -1,0 +1,337 @@
+/* ============================================================================
+   Bandit Theme (Blue Accent)
+============================================================================ */
+.button-style,
+button:not(#calculate-btn),
+#save-build,
+#load-build,
+#reset-btn,
+#share-build {
+  background: #2B1017 !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 0 6px rgba(255, 79, 79, 0.4); /* subtle red glow */
+  transition: all 0.25s ease-in-out;
+}
+
+/* 🔴 Red hover effect (excluding calculate) */
+.button-style:hover,
+button:not(#calculate-btn):hover,
+#save-build:hover,
+#load-build:hover,
+#reset-btn:hover,
+#share-build:hover {
+  background: var(--bandit-accent-dark) !important;
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 79, 79, 0.6); /* stronger red glow */
+  color: white !important;
+}
+
+
+/* ============================================================================
+   BANDIT DAMAGE CALCULATOR
+============================================================================ */
+.bandit-calculator {
+  --bandit-accent: #c28840;
+  --bandit-dark: #83592b;
+  --item-bg: rgba(56, 39, 15, 0.3);
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 1400px;
+  background: #0a0e1a;
+  overflow: visible;
+}
+
+.bandit-calculator .settings-panel {
+  width: 50%;
+  min-width: 700px;
+  padding: 30px;
+  border-right: 1px solid rgba(255, 79, 79, 0.3);
+  background: rgba(10, 14, 26, 0.95);
+  box-sizing: border-box;
+  max-height: calc(140vh - 20px);
+  overflow-y: auto;
+}
+
+.bandit-calculator .output-panel {
+  width: 50%;
+  min-width: 700px;
+  padding: 30px;
+  background: rgba(96, 15, 15, 0.1);
+  box-sizing: border-box;
+  position: sticky;
+  top: 20px;
+  height: max-content;
+  align-self: flex-start;
+}
+
+.bandit-calculator .input-group {
+  margin-bottom: 30px;
+}
+
+.bandit-calculator .input-group label,
+.bandit-calculator .input-group h2 {
+  color: var(--bandit-accent);
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.bandit-calculator .skill-grid,
+.bandit-calculator .damage-item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.bandit-calculator .skill-tile,
+.bandit-calculator .damage-item-tile {
+  background: var(--item-bg);
+  border: 1px solid rgba(255, 79, 79, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 0.95rem;
+}
+
+.bandit-calculator .skill-tile:hover,
+.bandit-calculator .damage-item-tile:hover {
+  background: rgba(255, 79, 79, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(255, 79, 79, 0.2);
+}
+
+.bandit-calculator .skill-tile.active,
+.bandit-calculator .damage-item-tile.active {
+  background: rgba(255, 79, 79, 0.25);
+  border-color: var(--bandit-accent);
+  box-shadow: 0 0 15px rgba(255, 79, 79, 0.4);
+}
+
+.bandit-calculator .skill-tile img,
+.bandit-calculator .damage-item-tile img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.bandit-calculator .active-skill-display {
+  background: rgba(255, 79, 79, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 15px;
+}
+
+.bandit-calculator .active-skill-display img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 12px;
+}
+
+.bandit-calculator .results-card {
+  background: rgba(96, 15, 15, 0.3);
+  border-radius: 12px;
+  padding: 15px;
+  color: var(--text-light);
+}
+
+.bandit-calculator .damage-section {
+  margin: 25px 0;
+  padding: 10px;
+  background: rgba(96, 15, 15, 0.25);
+  border-radius: 10px;
+}
+
+.bandit-calculator .damage-section h4 {
+  color: var(--bandit-accent);
+  font-size: 1.1rem;
+}
+
+.bandit-calculator .damage-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--bandit-accent);
+  margin: 0.5rem 0;
+  text-shadow: 0 0 10px rgba(255, 79, 79, 0.4);
+}
+
+.bandit-calculator .damage-breakdown {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 18px;
+  margin-top: 25px;
+}
+
+.bandit-calculator .damage-breakdown p {
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
+
+.bandit-calculator .skill-used {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 25px 0;
+}
+
+.bandit-calculator .skill-used img {
+  width: 40px;
+  height: 40px;
+}
+
+.bandit-calculator .skill-used strong {
+  font-size: 1.4rem;
+  color: var(--bandit-accent);
+}
+
+.bandit-calculator .active-damage-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.bandit-calculator .active-damage-item {
+  background: rgba(255, 79, 79, 0.2);
+  border-radius: 10px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: var(--text-light);
+}
+
+.bandit-calculator .active-damage-item img {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.bandit-calculator .selected-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bandit-calculator .selected-item-controls button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bandit-accent);
+  color: white;
+  border: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.bandit-calculator .selected-item-controls button:hover {
+  background: var(--bandit-dark);
+  transform: scale(1.08);
+}
+
+.bandit-calculator .selected-item-count {
+  font-size: 1.1rem;
+  min-width: 24px;
+  text-align: center;
+  color: var(--text-light);
+}
+
+.share-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* ============================================
+   CUSTOM RANGE SLIDER STYLE (Loader Theme)
+=============================================== */
+input[type="range"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 79, 79, 0.2);
+  border-radius: 6px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bandit-accent);
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(255, 79, 79, 0.5);
+  transition: transform 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bandit-accent);
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(255, 79, 79, 0.5);
+  transition: transform 0.2s;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.1);
+}
+
+input[type="range"]::-moz-range-track {
+  background: rgba(255, 79, 79, 0.2);
+  height: 10px;
+  border-radius: 6px;
+}
+
+
+/* ============================================
+   COMMANDO SLIDER COLOR CUSTOMIZATION
+=============================================== */
+
+.bandit-calculator input[type="range"] {
+  accent-color: var(--bandit-accent);
+}
+
+.bandit-calculator {
+  display: flex;
+  align-items: flex-start; /* so the sticky panel doesn't stretch */
+}
+
+.sticky-panel {
+  position: sticky;
+  top: 20px; /* same offset you used on Railgunner */
+  align-self: flex-start;
+  height: max-content;
+}
+
+/* reuse the same railgunner styles */
+.calculator {
+  display: flex;
+  align-items: flex-start;
+}
+.output-panel {
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
+  height: max-content;
+}
