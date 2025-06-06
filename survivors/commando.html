@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Commando Damage Calculator</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="../styles/survivors/commando.css" />
+    <link rel="stylesheet" href="../styles/navbar.css" />
+  </head>
+  <body>
+    <div class="navbar enhanced-navbar">
+      <a href="../index.html" class="nav-back">
+        <span class="arrow">←</span> Back to Survivors
+      </a>
+
+      <div class="nav-center">
+        <img
+          src="../images/Survivor_Icons/commando-icon.png"
+          alt="Commando"
+          class="nav-icon"
+        />
+        <h1 class="nav-title">Commando Damage Calculator</h1>
+      </div>
+
+      <div class="nav-filler nav-links">
+        <a href="../savedBuilds.html" class="nav-link">Saved Builds</a>
+      </div>
+    </div>
+    <!-- main flex container -->
+    <div class="calculator commando-calculator">
+      <!-- LEFT panel: scrollable settings -->
+      <div class="settings-panel">
+        <div class="input-group">
+          <label>
+            Survivor Level: <span id="level-display">20</span>
+            <span class="base-damage"
+              >(Base Damage: <span id="base-damage-display">57.6</span>)</span
+            >
+          </label>
+          <input type="range" id="level" min="1" max="99" value="20" />
+        </div>
+
+        <div class="input-group">
+          <label>
+            Movement Buff: <span id="speed-buff-display">0%</span>
+          </label>
+          <input
+            type="range"
+            id="speed-buff"
+            min="0"
+            max="100"
+            step="5"
+            value="0"
+          />
+        </div>
+
+        <div class="input-group">
+          <h2>Select Skill</h2>
+          <div class="skill-grid" id="skill-grid"></div>
+          <div class="active-skill-display" id="active-skill">
+            <p>No skill selected</p>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <h2>Damage Items</h2>
+          <div class="damage-item-grid" id="damage-item-grid"></div>
+          <div class="selected-damage-items" id="selected-damage-items">
+            <p>No damage items selected</p>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-row">
+          <button id="calculate-btn" class="calculate-btn commando-calculate-btn">
+            Calculate Damage
+          </button>
+
+          <button id="reset-btn" class="button-style">🔄 Reset</button>
+
+          <button id="save-build" class="button-style">💾 Save Build</button>
+
+          <select id="load-build" class="button-style">
+            <option value="">📂 Load Build</option>
+          </select>
+
+          <div class="share-row">
+            <button id="share-build" class="button-style">
+              🔗 Share Build
+            </button>
+            <input
+              type="text"
+              id="share-url"
+              readonly
+              placeholder="Your build link will appear here"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT panel: sticky output -->
+      <div class="output-panel sticky-panel">
+        <div class="results-card" id="result"></div>
+      </div>
+    </div>
+
+    <script type="module">
+      import {
+        damageItems,
+        selectedDamageItems,
+        initDamageItemGrid,
+        updateDamageItemDisplay,
+        calculateItemMultiplier,
+      } from "../scripts/shared/itemInventory.js";
+
+      const skills = {
+        doubleTap: {
+          name: "Double Tap (Primary)",
+          icon: "../images/Survivor_Icons/commando-icon.png",
+          multiplier: 1.8,
+          description: "Fire two shots for a total of 180% damage."
+        },
+        phaseRound: {
+          name: "Phase Round (Secondary)",
+          icon: "../images/Survivor_Icons/commando-icon.png",
+          multiplier: 2.3,
+          description: "Fire a piercing round for 230% damage."
+        },
+        tacticalDive: {
+          name: "Tactical Dive (Utility)",
+          icon: "../images/Survivor_Icons/commando-icon.png",
+          multiplier: 0,
+          description: "Roll forward to dodge attacks (no damage)."
+        },
+        suppressiveFire: {
+          name: "Suppressive Fire (Special)",
+          icon: "../images/Survivor_Icons/commando-icon.png",
+          multiplier: 6.0,
+          description: "Rapidly fire to stun for 6×100% damage."
+        }
+      };
+
+      let selectedSkill = null;
+
+      const elements = {
+        levelSlider: document.getElementById("level"),
+        speedBuffSlider: document.getElementById("speed-buff"),
+        speedBuffDisplay: document.getElementById("speed-buff-display"),
+        skillGrid: document.getElementById("skill-grid"),
+        activeSkillDisplay: document.getElementById("active-skill"),
+        levelDisplay: document.getElementById("level-display"),
+        baseDamageDisplay: document.getElementById("base-damage-display"),
+        calculateBtn: document.getElementById("calculate-btn"),
+        damageItemGrid: document.getElementById("damage-item-grid"),
+        selectedDamageItemsDisplay: document.getElementById(
+          "selected-damage-items"
+        ),
+        result: document.getElementById("result"),
+      };
+
+      function initSkillGrid() {
+        elements.skillGrid.innerHTML = "";
+        Object.entries(skills).forEach(([id, skill]) => {
+          const tile = document.createElement("div");
+          tile.className = `skill-tile ${selectedSkill === id ? "active" : ""}`;
+          tile.innerHTML = `
+            <img src="${skill.icon}" alt="${skill.name}" />
+            <span>${skill.name}</span>
+          `;
+          tile.addEventListener("click", () => {
+            selectedSkill = id;
+            updateSkillDisplay();
+            initSkillGrid();
+          });
+          elements.skillGrid.appendChild(tile);
+        });
+      }
+
+      function updateSkillDisplay() {
+        if (selectedSkill) {
+          const skill = skills[selectedSkill];
+          elements.activeSkillDisplay.innerHTML = `
+      <img src="${skill.icon}" class="active-skill-icon">
+      <div>
+        <h4>${skill.name}</h4>
+        <p>${skill.description}</p>
+      </div>
+    `;
+        } else {
+          elements.activeSkillDisplay.innerHTML = `<p>No skill selected</p>`;
+        }
+      }
+
+      function calculateDamage() {
+        if (!selectedSkill) {
+          elements.result.innerHTML = `<p class="error">Please select a skill.</p>`;
+          return;
+        }
+
+        const level = parseInt(elements.levelSlider.value);
+        const speedBuff = parseInt(elements.speedBuffSlider.value);
+        const skill = skills[selectedSkill];
+        const baseDamage = 12 + 2.4 * (level - 1);
+        const skillDamage = baseDamage * skill.multiplier;
+
+        let itemMultiplier = 1;
+        const modifiers = [];
+
+        Object.entries(selectedDamageItems).forEach(([id, data]) => {
+          if (!data.count || data.count <= 0) return;
+          const item = damageItems[id];
+          const mult = calculateItemMultiplier(item, data.count);
+          itemMultiplier *= mult;
+          modifiers.push(
+            `${item.name}${data.count > 1 ? ` ×${data.count}` : ""}`
+          );
+        });
+
+        const preCrit = skillDamage * itemMultiplier;
+        const speedMultiplier = 1 + speedBuff / 100;
+        const crit = preCrit * 2;
+        const moveBuff = preCrit * speedMultiplier;
+        const moveBuffCrit = crit * speedMultiplier;
+
+        const isBandTrigger = skill.multiplier >= 4;
+        const runaldBonus =
+          isBandTrigger && selectedDamageItems.runaldsBand?.count
+            ? baseDamage * 2.5
+            : 0;
+        const kjaroBonus =
+          isBandTrigger && selectedDamageItems.kjarosBand?.count
+            ? baseDamage * 3.0
+            : 0;
+
+        const totalModifiers = modifiers.join(" × ") || "None";
+
+        const resultHTML = `
+          <div class="results-card">
+            <h3>Level ${level} Commando</h3>
+            <div class="skill-used">
+              <img src="${skill.icon}" width="28" />
+              <strong>${skill.name}</strong>
+            </div>
+
+            <div class="damage-section"><h4>Non-Crit Hit</h4>
+              <p class="damage-value">${Math.round(
+                preCrit + runaldBonus + kjaroBonus
+              ).toLocaleString()} Damage</p></div>
+
+            <div class="damage-section"><h4>Crit Hit</h4>
+              <p class="damage-value">${Math.round(
+                crit + runaldBonus + kjaroBonus
+              ).toLocaleString()} Damage</p></div>
+
+            <div class="damage-section"><h4>Movement Buff Hit</h4>
+              <p class="damage-value">${Math.round(
+                moveBuff + runaldBonus + kjaroBonus
+              ).toLocaleString()} Damage</p></div>
+
+            <div class="damage-section"><h4>Movement Buff Crit</h4>
+              <p class="damage-value">${Math.round(
+                moveBuffCrit + runaldBonus + kjaroBonus
+              ).toLocaleString()} Damage</p></div>
+
+            <div class="damage-breakdown">
+              <p>Base: ${baseDamage.toFixed(1)} × ${
+          skill.multiplier
+        } (Skill Multiplier)</p>
+              <p>Multipliers: ${totalModifiers}</p>
+              <p>Total Multiplier: ×${itemMultiplier.toFixed(2)}</p>
+              <p>Pre-Crit Damage: ${Math.round(preCrit).toLocaleString()}</p>
+              ${
+                isBandTrigger && (runaldBonus || kjaroBonus)
+                  ? `<p>Runald’s Bonus: ${Math.round(
+                      runaldBonus
+                    ).toLocaleString()} | Kjaro’s Bonus: ${Math.round(
+                      kjaroBonus
+                    ).toLocaleString()}</p>`
+                  : ""
+              }
+              <p>Speed Buff: ${speedBuff}% → ×${speedMultiplier.toFixed(2)}</p>
+            </div>
+          </div>
+        `;
+
+        elements.result.innerHTML = resultHTML;
+      }
+
+      elements.levelSlider.addEventListener("input", () => {
+        const level = parseInt(elements.levelSlider.value);
+        elements.levelDisplay.textContent = level;
+        elements.baseDamageDisplay.textContent = (
+          12 +
+          2.4 * (level - 1)
+        ).toFixed(1);
+      });
+
+      elements.speedBuffSlider.addEventListener("input", () => {
+        elements.speedBuffDisplay.textContent = `${elements.speedBuffSlider.value}%`;
+      });
+
+      elements.calculateBtn.addEventListener("click", calculateDamage);
+
+      // Init
+      initSkillGrid();
+      initDamageItemGrid();
+      updateDamageItemDisplay();
+      elements.levelDisplay.textContent = elements.levelSlider.value;
+      elements.baseDamageDisplay.textContent = (
+        12 +
+        2.4 * (parseInt(elements.levelSlider.value) - 1)
+      ).toFixed(1);
+      elements.speedBuffDisplay.textContent = `${elements.speedBuffSlider.value}%`;
+
+      document.getElementById("reset-btn").addEventListener("click", () => {
+        // Reset level and speed buff sliders
+        elements.levelSlider.value = 20;
+        elements.speedBuffSlider.value = 0;
+
+        elements.levelDisplay.textContent = "20";
+        elements.baseDamageDisplay.textContent = (12 + 2.4 * (20 - 1)).toFixed(
+          1
+        );
+        elements.speedBuffDisplay.textContent = "0%";
+
+        // Clear skill selection
+        selectedSkill = null;
+        updateSkillDisplay();
+        initSkillGrid();
+
+        // Clear item selections
+        Object.keys(selectedDamageItems).forEach(
+          (key) => delete selectedDamageItems[key]
+        );
+        updateDamageItemDisplay();
+        initDamageItemGrid();
+
+        // Clear result output
+        elements.result.innerHTML = "";
+
+        // ✅ Reset the dropdown menu to "Load Build"
+        document.getElementById("load-build").selectedIndex = 0;
+      });
+
+      function generateShareLink() {
+        const level = elements.levelSlider.value;
+        const skill = selectedSkill || "";
+        const items = Object.entries(selectedDamageItems)
+          .filter(([_, d]) => d.count > 0)
+          .map(([id, d]) => `${id}:${d.count}`)
+          .join(",");
+
+        const params = new URLSearchParams({
+          level,
+          skill,
+          items,
+        });
+
+        const url = `${window.location.origin}${
+          window.location.pathname
+        }?${params.toString()}`;
+        document.getElementById("share-url").value = url;
+      }
+
+      document
+        .getElementById("share-build")
+        .addEventListener("click", generateShareLink);
+
+      function loadBuildFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        const level = parseInt(params.get("level")) || 20;
+        const skill = params.get("skill") || null;
+        const items = params.get("items");
+
+        elements.levelSlider.value = level;
+        elements.levelDisplay.textContent = level;
+        elements.baseDamageDisplay.textContent = (
+          12 +
+          2.4 * (level - 1)
+        ).toFixed(1);
+
+        selectedSkill = skill;
+        if (items) {
+          selectedDamageItems = {};
+          items.split(",").forEach((pair) => {
+            const [id, count] = pair.split(":");
+            if (damageItems[id]) {
+              selectedDamageItems[id] = {
+                item: damageItems[id],
+                count: parseInt(count),
+              };
+            }
+          });
+        }
+
+        updateSkillDisplay();
+        initSkillGrid();
+        updateDamageItemDisplay();
+        initDamageItemGrid();
+      }
+
+      loadBuildFromURL();
+
+      function getBuildKey(suffix = "") {
+        return `ror2-commando-${selectedSkill || "noskill"}-${suffix}`;
+      }
+
+      function saveBuild() {
+        const name = prompt("Name this build:");
+        if (!name) return;
+        const build = {
+          level: elements.levelSlider.value,
+          skill: selectedSkill,
+          items: selectedDamageItems,
+        };
+        localStorage.setItem(getBuildKey(name), JSON.stringify(build));
+        updateLoadDropdown();
+      }
+
+      function loadBuildFromKey(key) {
+        const data = JSON.parse(localStorage.getItem(key));
+        if (!data) return;
+
+        elements.levelSlider.value = data.level;
+        selectedSkill = data.skill;
+        Object.keys(selectedDamageItems).forEach(
+          (key) => delete selectedDamageItems[key]
+        );
+        Object.entries(data.items || {}).forEach(([key, value]) => {
+          selectedDamageItems[key] = value;
+        });
+        elements.levelSlider.dispatchEvent(new Event("input"));
+
+        updateSkillDisplay();
+        initSkillGrid();
+        updateDamageItemDisplay();
+        initDamageItemGrid();
+      }
+
+      function updateLoadDropdown() {
+        const select = document.getElementById("load-build");
+        select.innerHTML = `<option value="">📂 Load Build</option>`; // placeholder first
+        Object.keys(localStorage).forEach((key) => {
+          if (key.startsWith("ror2-commando")) {
+            const label = key.replace("ror2-commando-", "").replace(/-/g, " ");
+            select.innerHTML += `<option value="${key}">${label}</option>`;
+          }
+        });
+      }
+
+      document
+        .getElementById("save-build")
+        .addEventListener("click", saveBuild);
+      document.getElementById("load-build").addEventListener("change", (e) => {
+        if (e.target.value) loadBuildFromKey(e.target.value);
+      });
+
+      updateLoadDropdown();
+
+      // Load build from URL if provided
+      const urlParams = new URLSearchParams(window.location.search);
+      const loadKey = urlParams.get("load");
+      if (loadKey) loadBuildFromKey(loadKey);
+    </script>
+  </body>
+</html>
