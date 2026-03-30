@@ -30,7 +30,7 @@ button:not(#calculate-btn),
 #reset-btn,
 #share-build {
     background: var(--secondary-btn-bg) !important;
-    color: var(--text-on-accent) !important;
+    color: var(--secondary-btn-fg) !important;
     border: none !important;
     box-shadow: 0 0 6px var(--secondary-btn-shadow);
     transition: all 0.25s ease-in-out;
@@ -194,6 +194,22 @@ button:not(#calculate-btn):hover,
 .calculator .button-row #calculate-btn {
     grid-column: 1 / -1;
     justify-self: stretch;
+}
+
+.calculator #calculate-btn {
+    background: linear-gradient(
+        135deg,
+        var(--survivor-accent),
+        var(--survivor-accent-dark)
+    ) !important;
+    color: var(--text-on-accent) !important;
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent) !important;
+    box-shadow: 0 0 18px var(--shadow-accent);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.calculator #calculate-btn:hover {
+    filter: brightness(1.05);
 }
 
 .calculator .button-row #share-url {

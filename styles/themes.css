@@ -26,6 +26,7 @@
     --share-bg: #0f1a2e;
     --share-fg: #e0e0e0;
     --secondary-btn-bg: #2b1017;
+    --secondary-btn-fg: #f8fafc;
     --secondary-btn-shadow: rgba(255, 79, 79, 0.35);
     --calc-results-bg: rgba(96, 15, 15, 0.35);
     --calc-section-bg: rgba(96, 15, 15, 0.28);
@@ -62,6 +63,7 @@
     --share-bg: #f1f5f9;
     --share-fg: #334155;
     --secondary-btn-bg: #334155;
+    --secondary-btn-fg: #f8fafc;
     --secondary-btn-shadow: rgba(15, 23, 42, 0.12);
     --calc-results-bg: rgba(15, 23, 42, 0.07);
     --calc-section-bg: rgba(37, 99, 235, 0.08);
@@ -98,6 +100,7 @@
     --share-bg: #0f0820;
     --share-fg: #e9d5ff;
     --secondary-btn-bg: #2e1065;
+    --secondary-btn-fg: #faf5ff;
     --secondary-btn-shadow: rgba(167, 139, 250, 0.35);
     --calc-results-bg: rgba(46, 16, 101, 0.35);
     --calc-section-bg: rgba(76, 29, 149, 0.3);
@@ -133,6 +136,7 @@
     --share-bg: #1a0a06;
     --share-fg: #ffedd5;
     --secondary-btn-bg: #431407;
+    --secondary-btn-fg: #fff7ed;
     --secondary-btn-shadow: rgba(249, 115, 22, 0.3);
     --calc-results-bg: rgba(124, 45, 18, 0.35);
     --calc-section-bg: rgba(154, 52, 18, 0.28);
