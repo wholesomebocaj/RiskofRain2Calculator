@@ -292,6 +292,7 @@ button:not(#calculate-btn):hover,
     gap: 0.35rem;
 }
 
+.calculator .damage-item-filter input[type="search"],
 .calculator .damage-item-filter select {
     border-radius: 6px;
     border: 1px solid var(--survivor-border);
@@ -299,6 +300,10 @@ button:not(#calculate-btn):hover,
     color: var(--text-primary);
     padding: 0.3rem 0.5rem;
     font: inherit;
+}
+
+.calculator .damage-item-filter input[type="search"] {
+    min-width: 160px;
 }
 
 .calculator .damage-item-filter input[type="checkbox"] {

@@ -552,6 +552,7 @@ export const damageItems = {
 export let selectedDamageItems = {};
 let showDlcItems = false;
 let sortOrder = "alphabetical";
+let searchQuery = "";
 
 function ensureDlcToggle(container) {
     if (!container || !container.parentElement) return;
@@ -565,6 +566,10 @@ function ensureDlcToggle(container) {
         Include DLC damage items
       </label>
       <label>
+        Search
+        <input type="search" id="damage-item-search" placeholder="Search items" />
+      </label>
+      <label>
         Sort by
         <select id="damage-item-sort">
           <option value="alphabetical">Alphabetical</option>
@@ -575,10 +580,16 @@ function ensureDlcToggle(container) {
     container.parentElement.insertBefore(filter, container);
 
     const toggle = filter.querySelector("#include-dlc-items-toggle");
+    const searchInput = filter.querySelector("#damage-item-search");
     const sortSelect = filter.querySelector("#damage-item-sort");
 
     toggle.addEventListener("change", (event) => {
         showDlcItems = event.target.checked;
+        initDamageItemGrid();
+    });
+
+    searchInput.addEventListener("input", (event) => {
+        searchQuery = event.target.value.trim().toLowerCase();
         initDamageItemGrid();
     });
 
@@ -610,9 +621,16 @@ export function initDamageItemGrid() {
     ensureDlcToggle(container);
     container.innerHTML = "";
 
-    const visibleItems = Object.entries(damageItems).filter(
-        ([, item]) => showDlcItems || !item.isDLC,
-    );
+    const visibleItems = Object.entries(damageItems)
+        .filter(([, item]) => showDlcItems || !item.isDLC)
+        .filter(([, item]) => {
+            if (!searchQuery) return true;
+            const needle = searchQuery;
+            return (
+                item.name.toLowerCase().includes(needle) ||
+                item.effect.toLowerCase().includes(needle)
+            );
+        });
 
     const sortedItems = [...visibleItems].sort(([idA, itemA], [idB, itemB]) => {
         if (sortOrder === "damage") {
