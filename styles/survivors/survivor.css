@@ -191,6 +191,11 @@ button:not(#calculate-btn):hover,
     align-content: start;
 }
 
+.calculator .button-row #calculate-btn {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+}
+
 .calculator .button-row #share-url {
     grid-column: 1 / -1;
     margin-top: 0;
