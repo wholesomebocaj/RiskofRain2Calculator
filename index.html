@@ -53,7 +53,24 @@
             </div>
         </div>
 
-        <div class="index-survivor-grid">
+        <main class="index-main">
+            <section class="index-hero">
+                <p class="index-subtitle">
+                    Pick a survivor, choose items, and instantly see damage
+                    output.
+                </p>
+                <div class="index-search">
+                    <input
+                        id="survivor-search"
+                        type="text"
+                        placeholder="Search survivors…"
+                        autocomplete="off"
+                        aria-label="Search survivors"
+                    />
+                </div>
+            </section>
+
+            <div class="index-survivor-grid" id="survivor-grid">
             <a
                 href="survivors/railgunner.html"
                 class="index-survivor-card railgunner"
@@ -153,7 +170,32 @@
                 />
                 <h2>Void Fiend</h2>
             </a>
-        </div>
+            </div>
+        </main>
         <script src="scripts/theme.js" defer></script>
+        <script>
+            (function () {
+                const input = document.getElementById("survivor-search");
+                const grid = document.getElementById("survivor-grid");
+                if (!input || !grid) return;
+
+                const cards = Array.from(
+                    grid.querySelectorAll(".index-survivor-card"),
+                );
+
+                function applyFilter() {
+                    const q = (input.value || "").trim().toLowerCase();
+                    for (const card of cards) {
+                        const label = (card.textContent || "")
+                            .trim()
+                            .toLowerCase();
+                        card.style.display =
+                            !q || label.includes(q) ? "" : "none";
+                    }
+                }
+
+                input.addEventListener("input", applyFilter);
+            })();
+        </script>
     </body>
 </html>

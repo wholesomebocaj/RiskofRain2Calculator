@@ -10,6 +10,40 @@ body {
     color: var(--text-primary);
 }
 
+.index-main {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+    padding: 1.75rem 1.25rem 3rem;
+    box-sizing: border-box;
+}
+
+.index-hero {
+    display: grid;
+    gap: 0.9rem;
+    margin: 0 0 1.25rem;
+}
+
+.index-subtitle {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+}
+
+.index-search input {
+    width: 100%;
+    padding: 0.85rem 0.95rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+}
+
+.index-search input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
 /* ===================================================
    HOMEPAGE NAVBAR
 =================================================== */
@@ -57,11 +91,9 @@ body {
    SURVIVOR SELECTION GRID
 =================================================== */
 .index-survivor-grid {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 3rem;
-    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 1.25rem;
 }
 
 /* ===================================================
@@ -73,38 +105,40 @@ body {
         var(--index-card-a),
         var(--index-card-b)
     );
-    border-radius: 20px;
-    padding: 2rem;
-    width: 220px;
+    border-radius: 18px;
+    padding: 1.35rem 1.15rem;
+    width: auto;
     text-align: center;
     text-decoration: none;
     color: var(--text-primary);
     border: 1px solid var(--border);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+    transition: transform 0.18s ease, box-shadow 0.18s ease,
+        border-color 0.18s ease;
     position: relative;
     overflow: hidden;
 }
 
 .index-survivor-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 25px var(--shadow-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
 }
 
 .index-survivor-card img {
-    width: 90px;
-    height: 90px;
+    width: 74px;
+    height: 74px;
     object-fit: contain;
-    margin-bottom: 1rem;
-    transition: transform 0.3s ease;
+    margin-bottom: 0.85rem;
+    transition: transform 0.18s ease;
 }
 
 .index-survivor-card:hover img {
-    transform: rotate(6deg) scale(1.1);
+    transform: scale(1.08);
 }
 
 .index-survivor-card h2 {
-    font-size: 1.4rem;
+    font-size: 1.15rem;
     margin: 0;
     color: var(--index-card-title);
     text-shadow: 0 0 10px var(--shadow-accent);
@@ -131,14 +165,12 @@ body {
         justify-content: center;
     }
 
-    .index-survivor-card {
-        width: 100%;
-        max-width: 320px;
+    .index-main {
+        padding: 1.25rem 1rem 2.5rem;
     }
 
     .index-survivor-grid {
-        padding: 2rem 1rem;
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     }
 }
 
