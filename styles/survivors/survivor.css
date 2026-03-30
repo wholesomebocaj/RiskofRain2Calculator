@@ -278,11 +278,27 @@ button:not(#calculate-btn):hover,
 
 .calculator .damage-item-filter {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.6rem;
     margin-bottom: 0.75rem;
     color: var(--survivor-accent);
     font-size: 0.95rem;
+}
+
+.calculator .damage-item-filter label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.calculator .damage-item-filter select {
+    border-radius: 6px;
+    border: 1px solid var(--survivor-border);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    padding: 0.3rem 0.5rem;
+    font: inherit;
 }
 
 .calculator .damage-item-filter input[type="checkbox"] {

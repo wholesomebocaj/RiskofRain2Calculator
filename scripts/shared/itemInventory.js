@@ -551,6 +551,7 @@ export const damageItems = {
 
 export let selectedDamageItems = {};
 let showDlcItems = false;
+let sortOrder = "alphabetical";
 
 function ensureDlcToggle(container) {
     if (!container || !container.parentElement) return;
@@ -563,12 +564,26 @@ function ensureDlcToggle(container) {
         <input type="checkbox" id="include-dlc-items-toggle" />
         Include DLC damage items
       </label>
+      <label>
+        Sort by
+        <select id="damage-item-sort">
+          <option value="alphabetical">Alphabetical</option>
+          <option value="damage">Damage %</option>
+        </select>
+      </label>
     `;
     container.parentElement.insertBefore(filter, container);
 
     const toggle = filter.querySelector("#include-dlc-items-toggle");
+    const sortSelect = filter.querySelector("#damage-item-sort");
+
     toggle.addEventListener("change", (event) => {
         showDlcItems = event.target.checked;
+        initDamageItemGrid();
+    });
+
+    sortSelect.addEventListener("change", (event) => {
+        sortOrder = event.target.value;
         initDamageItemGrid();
     });
 }
@@ -599,7 +614,15 @@ export function initDamageItemGrid() {
         ([, item]) => showDlcItems || !item.isDLC,
     );
 
-    visibleItems.forEach(([id, item]) => {
+    const sortedItems = [...visibleItems].sort(([idA, itemA], [idB, itemB]) => {
+        if (sortOrder === "damage") {
+            const delta = itemB.multiplier - itemA.multiplier;
+            return delta !== 0 ? delta : itemA.name.localeCompare(itemB.name);
+        }
+        return itemA.name.localeCompare(itemB.name);
+    });
+
+    sortedItems.forEach(([id, item]) => {
         const count = selectedDamageItems[id]?.count || 0;
         const icon = item.icon || defaultDamageIcon;
         const tile = document.createElement("div");
