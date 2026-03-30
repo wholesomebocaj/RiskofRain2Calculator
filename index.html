@@ -3,8 +3,27 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script>
+            (function () {
+                var k = "ror2-theme",
+                    o = { petrichor: 1, light: 1, void: 1, ember: 1 };
+                try {
+                    var t = localStorage.getItem(k);
+                    document.documentElement.setAttribute(
+                        "data-theme",
+                        o[t] ? t : "petrichor",
+                    );
+                } catch (e) {
+                    document.documentElement.setAttribute(
+                        "data-theme",
+                        "petrichor",
+                    );
+                }
+            })();
+        </script>
         <title>RoR2 Damage Calculator</title>
         <link rel="stylesheet" href="styles/global.css" />
+        <link rel="stylesheet" href="styles/themes.css" />
         <link rel="stylesheet" href="styles/index.css" />
     </head>
     <body>
@@ -12,7 +31,22 @@
             <div class="nav-center">
                 <h1 class="nav-title">Risk of Rain 2 Damage Calculator</h1>
             </div>
-            <div class="nav-filler nav-links">
+            <div class="index-nav-actions nav-links">
+                <div class="theme-picker">
+                    <label for="theme-select" class="theme-picker-label"
+                        >Theme</label
+                    >
+                    <select
+                        id="theme-select"
+                        class="theme-select"
+                        aria-label="Color theme"
+                    >
+                        <option value="petrichor">Petrichor</option>
+                        <option value="light">Daylight</option>
+                        <option value="void">Void</option>
+                        <option value="ember">Ember</option>
+                    </select>
+                </div>
                 <a href="./savedBuilds.html" class="nav-link"
                     >💾 Saved Builds</a
                 >
@@ -120,5 +154,6 @@
                 <h2>Void Fiend</h2>
             </a>
         </div>
+        <script src="scripts/theme.js" defer></script>
     </body>
 </html>

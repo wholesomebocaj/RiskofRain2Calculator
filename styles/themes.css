@@ -1,0 +1,193 @@
+/* Theme tokens — html[data-theme] set by scripts/theme.js (+ early inline snippet in <head>) */
+
+[data-theme="petrichor"] {
+    color-scheme: dark;
+    --bg-page: #0a0e1a;
+    --bg-card: #141c2e;
+    --bg-input: #1e2a44;
+    --bg-nav: #0f1a2e;
+    --border: rgba(255, 159, 67, 0.28);
+    --accent: #ff9f43;
+    --accent-dark: #e07d2a;
+    --accent-hot: #ffa94d;
+    --text-primary: #e8eaed;
+    --text-muted: #94a3b8;
+    --text-dark: #0f172a;
+    --text-on-accent: #141820;
+    --nav-gradient-a: #0f1a2e;
+    --nav-gradient-b: #111c30;
+    --nav-title: #cbd5e1;
+    --nav-border: #ff9f43;
+    --index-title: #ff9f43;
+    --index-card-a: #16213e;
+    --index-card-b: #0f3460;
+    --index-card-title: #ffb677;
+    --shadow-accent: rgba(255, 159, 67, 0.35);
+    --share-bg: #0f1a2e;
+    --share-fg: #e0e0e0;
+    --secondary-btn-bg: #2b1017;
+    --secondary-btn-shadow: rgba(255, 79, 79, 0.35);
+    --calc-results-bg: rgba(96, 15, 15, 0.35);
+    --calc-section-bg: rgba(96, 15, 15, 0.28);
+    --calc-breakdown-bg: rgba(0, 0, 0, 0.22);
+    --tile-accent-soft: rgba(255, 79, 79, 0.22);
+    --save-build-bg: #2e2e70;
+    --load-build-bg: #122449;
+    --danger: #dc2626;
+}
+
+[data-theme="light"] {
+    color-scheme: light;
+    --bg-page: #f1f5f9;
+    --bg-card: #ffffff;
+    --bg-input: #e2e8f0;
+    --bg-nav: #ffffff;
+    --border: #cbd5e1;
+    --accent: #2563eb;
+    --accent-dark: #1d4ed8;
+    --accent-hot: #3b82f6;
+    --text-primary: #0f172a;
+    --text-muted: #64748b;
+    --text-dark: #0f172a;
+    --text-on-accent: #f8fafc;
+    --nav-gradient-a: #f8fafc;
+    --nav-gradient-b: #e2e8f0;
+    --nav-title: #1e293b;
+    --nav-border: #2563eb;
+    --index-title: #1d4ed8;
+    --index-card-a: #ffffff;
+    --index-card-b: #e0e7ff;
+    --index-card-title: #1e40af;
+    --shadow-accent: rgba(37, 99, 235, 0.22);
+    --share-bg: #f1f5f9;
+    --share-fg: #334155;
+    --secondary-btn-bg: #334155;
+    --secondary-btn-shadow: rgba(15, 23, 42, 0.12);
+    --calc-results-bg: rgba(15, 23, 42, 0.07);
+    --calc-section-bg: rgba(37, 99, 235, 0.08);
+    --calc-breakdown-bg: rgba(15, 23, 42, 0.06);
+    --tile-accent-soft: rgba(37, 99, 235, 0.15);
+    --save-build-bg: #3730a3;
+    --load-build-bg: #1e3a5f;
+    --danger: #b91c1c;
+}
+
+[data-theme="void"] {
+    color-scheme: dark;
+    --bg-page: #070510;
+    --bg-card: #120a1c;
+    --bg-input: #1a1228;
+    --bg-nav: #0f0820;
+    --border: rgba(167, 139, 250, 0.35);
+    --accent: #7c3aed;
+    --accent-dark: #5b21b6;
+    --accent-hot: #a78bfa;
+    --text-primary: #ede9fe;
+    --text-muted: #a5b4fc;
+    --text-dark: #1e1b4b;
+    --text-on-accent: #faf5ff;
+    --nav-gradient-a: #0f0820;
+    --nav-gradient-b: #1a0a2e;
+    --nav-title: #c4b5fd;
+    --nav-border: #7c3aed;
+    --index-title: #a78bfa;
+    --index-card-a: #1a1030;
+    --index-card-b: #2e1065;
+    --index-card-title: #ddd6fe;
+    --shadow-accent: rgba(124, 58, 237, 0.4);
+    --share-bg: #0f0820;
+    --share-fg: #e9d5ff;
+    --secondary-btn-bg: #2e1065;
+    --secondary-btn-shadow: rgba(167, 139, 250, 0.35);
+    --calc-results-bg: rgba(46, 16, 101, 0.35);
+    --calc-section-bg: rgba(76, 29, 149, 0.3);
+    --calc-breakdown-bg: rgba(0, 0, 0, 0.25);
+    --tile-accent-soft: rgba(167, 139, 250, 0.25);
+    --save-build-bg: #5b21b6;
+    --load-build-bg: #3b0764;
+    --danger: #a855f7;
+}
+
+[data-theme="ember"] {
+    color-scheme: dark;
+    --bg-page: #140805;
+    --bg-card: #1c0f0a;
+    --bg-input: #2a1510;
+    --accent: #f97316;
+    --accent-dark: #c2410c;
+    --accent-hot: #fb923c;
+    --text-primary: #fef3e2;
+    --text-muted: #d4a574;
+    --text-dark: #431407;
+    --text-on-accent: #1c0a02;
+    --nav-gradient-a: #1a0a06;
+    --nav-gradient-b: #2d1210;
+    --nav-title: #fdba74;
+    --nav-border: #ea580c;
+    --index-title: #fb923c;
+    --index-card-a: #3d1508;
+    --index-card-b: #7c2d12;
+    --index-card-title: #fed7aa;
+    --border: rgba(249, 115, 22, 0.35);
+    --shadow-accent: rgba(249, 115, 22, 0.35);
+    --share-bg: #1a0a06;
+    --share-fg: #ffedd5;
+    --secondary-btn-bg: #431407;
+    --secondary-btn-shadow: rgba(249, 115, 22, 0.3);
+    --calc-results-bg: rgba(124, 45, 18, 0.35);
+    --calc-section-bg: rgba(154, 52, 18, 0.28);
+    --calc-breakdown-bg: rgba(0, 0, 0, 0.2);
+    --tile-accent-soft: rgba(249, 115, 22, 0.22);
+    --save-build-bg: #9a3412;
+    --load-build-bg: #7c2d12;
+    --danger: #ef4444;
+}
+
+/* --------------------------------------------------------------------------
+   Theme control (navbar / index header)
+--------------------------------------------------------------------------- */
+.theme-picker {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.theme-picker-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--nav-title);
+    white-space: nowrap;
+    opacity: 0.9;
+}
+
+.theme-select {
+    all: revert;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    cursor: pointer;
+    min-width: 8.5rem;
+    max-width: 12rem;
+}
+
+.theme-select:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.nav-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.index-navbar .nav-toolbar {
+    justify-content: flex-end;
+}

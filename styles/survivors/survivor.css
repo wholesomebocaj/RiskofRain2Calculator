@@ -29,14 +29,13 @@ button:not(#calculate-btn),
 #load-build,
 #reset-btn,
 #share-build {
-    background: #2b1017 !important;
-    color: white !important;
+    background: var(--secondary-btn-bg) !important;
+    color: var(--text-on-accent) !important;
     border: none !important;
-    box-shadow: 0 0 6px rgba(255, 79, 79, 0.4); /* subtle red glow */
+    box-shadow: 0 0 6px var(--secondary-btn-shadow);
     transition: all 0.25s ease-in-out;
 }
 
-/* 🔴 Red hover effect (excluding calculate) */
 .button-style:hover,
 button:not(#calculate-btn):hover,
 #save-build:hover,
@@ -45,20 +44,20 @@ button:not(#calculate-btn):hover,
 #share-build:hover {
     background: var(--survivor-accent-dark) !important;
     transform: scale(1.02);
-    box-shadow: 0 0 20px rgba(255, 79, 79, 0.6); /* stronger red glow */
-    color: white !important;
+    box-shadow: 0 0 16px var(--shadow-accent);
+    color: var(--text-on-accent) !important;
 }
 
 /* ============================================================================
    Survivor calculator layout (all pages use .calculator + theme class)
 ============================================================================ */
 .calculator {
-    --survivor-accent: #2563eb;
-    --survivor-accent-dark: #1d4ed8;
-    --survivor-dark: #1e40af;
-    --item-bg: #f8fafc;
-    --survivor-border: var(--border, #e2e8f0);
-    --survivor-panel: var(--bg-card, #ffffff);
+    --survivor-accent: var(--accent);
+    --survivor-accent-dark: var(--accent-dark);
+    --survivor-dark: var(--accent-dark);
+    --item-bg: var(--bg-input);
+    --survivor-border: var(--border);
+    --survivor-panel: var(--bg-card);
     flex: 1;
     min-height: 0;
     width: 100%;
@@ -250,14 +249,14 @@ button:not(#calculate-btn):hover,
 
 .calculator .skill-grid::-webkit-scrollbar-thumb,
 .calculator .damage-item-grid::-webkit-scrollbar-thumb {
-    background: rgba(37, 99, 235, 0.35);
+    background: color-mix(in srgb, var(--accent) 45%, transparent);
     border-radius: 9999px;
 }
 
 .calculator .skill-tile,
 .calculator .damage-item-tile {
     background: var(--item-bg);
-    border: 1px solid rgba(255, 79, 79, 0.3);
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
     border-radius: 8px;
     padding: 12px;
     text-align: center;
@@ -268,16 +267,16 @@ button:not(#calculate-btn):hover,
 
 .calculator .skill-tile:hover,
 .calculator .damage-item-tile:hover {
-    background: rgba(255, 79, 79, 0.2);
+    background: var(--tile-accent-soft);
     transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(255, 79, 79, 0.2);
+    box-shadow: 0 6px 12px var(--shadow-accent);
 }
 
 .calculator .skill-tile.active,
 .calculator .damage-item-tile.active {
-    background: rgba(255, 79, 79, 0.25);
+    background: color-mix(in srgb, var(--accent) 22%, var(--bg-card));
     border-color: var(--survivor-accent);
-    box-shadow: 0 0 15px rgba(255, 79, 79, 0.4);
+    box-shadow: 0 0 14px var(--shadow-accent);
 }
 
 .calculator .skill-tile img,
@@ -288,7 +287,7 @@ button:not(#calculate-btn):hover,
 }
 
 .calculator .active-skill-display {
-    background: rgba(255, 79, 79, 0.1);
+    background: var(--tile-accent-soft);
     border-radius: 8px;
     padding: 0.65rem 0.75rem;
     margin-top: 0.5rem;
@@ -301,16 +300,16 @@ button:not(#calculate-btn):hover,
 }
 
 .calculator .results-card {
-    background: rgba(96, 15, 15, 0.3);
+    background: var(--calc-results-bg);
     border-radius: 12px;
     padding: 15px;
-    color: var(--text-light);
+    color: var(--text-muted);
 }
 
 .calculator .damage-section {
     margin: 25px 0;
     padding: 10px;
-    background: rgba(96, 15, 15, 0.25);
+    background: var(--calc-section-bg);
     border-radius: 10px;
 }
 
@@ -324,11 +323,11 @@ button:not(#calculate-btn):hover,
     font-weight: bold;
     color: var(--survivor-accent);
     margin: 0.5rem 0;
-    text-shadow: 0 0 10px rgba(255, 79, 79, 0.4);
+    text-shadow: 0 0 10px var(--shadow-accent);
 }
 
 .calculator .damage-breakdown {
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--calc-breakdown-bg);
     border-radius: 8px;
     padding: 18px;
     margin-top: 25px;
@@ -365,14 +364,14 @@ button:not(#calculate-btn):hover,
 }
 
 .calculator .active-damage-item {
-    background: rgba(255, 79, 79, 0.2);
+    background: var(--tile-accent-soft);
     border-radius: 10px;
     padding: 12px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: 0.95rem;
-    color: var(--text-light);
+    color: var(--text-muted);
 }
 
 .calculator .active-damage-item img {
@@ -392,7 +391,7 @@ button:not(#calculate-btn):hover,
     height: 28px;
     border-radius: 50%;
     background: var(--survivor-accent);
-    color: white;
+    color: var(--text-on-accent);
     border: none;
     font-weight: bold;
     font-size: 1.1rem;
@@ -411,7 +410,7 @@ button:not(#calculate-btn):hover,
     font-size: 1.1rem;
     min-width: 24px;
     text-align: center;
-    color: var(--text-light);
+    color: var(--text-muted);
 }
 
 .share-section {
@@ -430,7 +429,7 @@ input[type="range"] {
     appearance: none;
     width: 100%;
     height: 10px;
-    background: rgba(255, 79, 79, 0.2);
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
     border-radius: 6px;
     outline: none;
 }
@@ -443,7 +442,7 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 50%;
     background: var(--survivor-accent);
     cursor: pointer;
-    box-shadow: 0 0 6px rgba(255, 79, 79, 0.5);
+    box-shadow: 0 0 6px var(--shadow-accent);
     transition: transform 0.2s;
 }
 
@@ -457,7 +456,7 @@ input[type="range"]::-moz-range-thumb {
     border-radius: 50%;
     background: var(--survivor-accent);
     cursor: pointer;
-    box-shadow: 0 0 6px rgba(255, 79, 79, 0.5);
+    box-shadow: 0 0 6px var(--shadow-accent);
     transition: transform 0.2s;
 }
 

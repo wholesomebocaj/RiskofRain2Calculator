@@ -2,23 +2,55 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
+        <script>
+            (function () {
+                var k = "ror2-theme",
+                    o = { petrichor: 1, light: 1, void: 1, ember: 1 };
+                try {
+                    var t = localStorage.getItem(k);
+                    document.documentElement.setAttribute(
+                        "data-theme",
+                        o[t] ? t : "petrichor",
+                    );
+                } catch (e) {
+                    document.documentElement.setAttribute(
+                        "data-theme",
+                        "petrichor",
+                    );
+                }
+            })();
+        </script>
         <title>Saved Builds</title>
         <link rel="stylesheet" href="./styles/global.css" />
+        <link rel="stylesheet" href="./styles/themes.css" />
+        <link rel="stylesheet" href="./styles/navbar.css" />
         <link rel="stylesheet" href="./styles/savedBuilds.css" />
     </head>
     <body>
         <div class="navbar enhanced-navbar">
-            <a href="../index.html" class="nav-back">← Back to Main Menu</a>
+            <a href="./index.html" class="nav-back">← Back to Main Menu</a>
 
             <div class="nav-center">
-                <!-- Survivor icon + title here -->
+                <h1 class="nav-title">Saved Builds</h1>
             </div>
 
-            <div class="nav-filler nav-links">
-                <a href="../index.html" class="nav-link">🏠 Main Menu</a>
-                <a href="../components/savedBuilds.html" class="nav-link"
-                    >💾 Saved Builds</a
-                >
+            <div class="nav-filler nav-links nav-toolbar">
+                <div class="theme-picker">
+                    <label for="theme-select" class="theme-picker-label"
+                        >Theme</label
+                    >
+                    <select
+                        id="theme-select"
+                        class="theme-select"
+                        aria-label="Color theme"
+                    >
+                        <option value="petrichor">Petrichor</option>
+                        <option value="light">Daylight</option>
+                        <option value="void">Void</option>
+                        <option value="ember">Ember</option>
+                    </select>
+                </div>
+                <a href="./index.html" class="nav-link">🏠 Main Menu</a>
             </div>
         </div>
 
@@ -135,5 +167,6 @@
 
             renderBuilds();
         </script>
+        <script src="./scripts/theme.js" defer></script>
     </body>
 </html>

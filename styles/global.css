@@ -7,25 +7,17 @@ body {
     min-height: 100%;
 }
 
+:root {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body {
     margin: 0;
     padding: 1rem;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: #f8fafc;
-    color: #111827;
+    font-family: inherit;
+    background: var(--bg-page);
+    color: var(--text-primary);
     line-height: 1.6;
-}
-
-:root {
-    --bg-dark: #f8fafc;
-    --bg-card: #ffffff;
-    --bg-nav: #ffffff;
-    --bg-input: #f1f5f9;
-    --accent: #2563eb;
-    --accent-dark: #1d4ed8;
-    --text-light: #64748b;
-    --text-dark: #111827;
-    --border: #e2e8f0;
 }
 
 /* ----------------------------------------------------
@@ -33,13 +25,13 @@ body {
 ----------------------------------------------------- */
 input[type="range"],
 input[type="number"],
-select,
+select:not(.theme-select),
 input[type="text"] {
     width: 100%;
     padding: 0.75rem;
     background: var(--bg-input);
-    color: var(--text-light);
-    border: 1px solid rgba(255, 159, 67, 0.3);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
     border-radius: 6px;
     font-size: 1rem;
 }
@@ -47,8 +39,8 @@ input[type="text"] {
 /* ----------------------------------------------------
    SHARED BUTTONS (logic & layout only)
 ----------------------------------------------------- */
-button,
-select,
+button:not(.theme-select),
+select:not(.theme-select),
 .button-style,
 .calculate-btn,
 .secondary-btn,
@@ -70,16 +62,16 @@ select,
 }
 
 /* ----------------------------------------------------
-   DEFAULT COLORS (fallback or index pages)
+   DEFAULT COLORS (theme tokens)
 ----------------------------------------------------- */
 .calculate-btn {
     background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-    color: var(--text-dark);
+    color: var(--text-on-accent);
 }
 
 .calculate-btn:hover {
     transform: scale(1.02);
-    box-shadow: 0 0 20px rgba(255, 159, 67, 0.6); /* uses global --accent */
+    box-shadow: 0 0 20px var(--shadow-accent);
 }
 
 .secondary-btn {
@@ -90,7 +82,7 @@ select,
 
 .reset-btn {
     background: transparent;
-    color: var(--text-light);
+    color: var(--text-muted);
     border: 1px solid var(--accent);
 }
 
@@ -104,20 +96,20 @@ button:hover,
 }
 
 #save-build {
-    background: #2e2e70;
-    color: white;
+    background: var(--save-build-bg);
+    color: var(--text-on-accent);
 }
 
 #load-build {
-    background: #122449;
-    color: white;
+    background: var(--load-build-bg);
+    color: var(--text-on-accent);
 }
 
 #share-url {
     margin-top: 0.5rem;
-    background: #0f1a2e;
+    background: var(--share-bg);
     border: 1px solid var(--accent);
-    color: #e0e0e0;
+    color: var(--share-fg);
     font-size: 0.95rem;
     width: 96%;
 }
@@ -135,6 +127,7 @@ button:hover,
 ----------------------------------------------------- */
 .nav-links {
     display: flex;
+    align-items: center;
     gap: 16px;
 }
 .nav-link {
@@ -145,6 +138,6 @@ button:hover,
     transition: color 0.2s ease;
 }
 .nav-link:hover {
-    color: #ffa94d;
+    color: var(--accent-hot);
     text-decoration: underline;
 }
