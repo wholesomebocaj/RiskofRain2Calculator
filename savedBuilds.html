@@ -1,72 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Saved Builds</title>
-    <link rel="stylesheet" href="./styles/global.css" />
-    <link rel="stylesheet" href="./styles/savedBuilds.css" />
-  </head>
-  <body>
-    <div class="navbar enhanced-navbar">
-      <a href="../index.html" class="nav-back">← Back to Main Menu</a>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Saved Builds</title>
+        <link rel="stylesheet" href="./styles/global.css" />
+        <link rel="stylesheet" href="./styles/savedBuilds.css" />
+    </head>
+    <body>
+        <div class="navbar enhanced-navbar">
+            <a href="../index.html" class="nav-back">← Back to Main Menu</a>
 
-      <div class="nav-center">
-        <!-- Survivor icon + title here -->
-      </div>
+            <div class="nav-center">
+                <!-- Survivor icon + title here -->
+            </div>
 
-      <div class="nav-filler nav-links">
-        <a href="../index.html" class="nav-link">🏠 Main Menu</a>
-        <a href="../components/savedBuilds.html" class="nav-link"
-          >💾 Saved Builds</a
-        >
-      </div>
+            <div class="nav-filler nav-links">
+                <a href="../index.html" class="nav-link">🏠 Main Menu</a>
+                <a href="../components/savedBuilds.html" class="nav-link"
+                    >💾 Saved Builds</a
+                >
+            </div>
+        </div>
 
-      
-    </div>
+        <div class="build-grid" id="build-list"></div>
 
-    <div class="build-grid" id="build-list"></div>
+        <script>
+            function getAllBuilds() {
+                const builds = [];
+                for (const key in localStorage) {
+                    if (key.startsWith("ror2-")) {
+                        try {
+                            const data = JSON.parse(localStorage.getItem(key));
+                            builds.push({
+                                key,
+                                name: key
+                                    .replace("ror2-", "")
+                                    .replace(/-/g, " "),
+                                ...data,
+                            });
+                        } catch {}
+                    }
+                }
+                return builds;
+            }
 
-    <script>
-      function getAllBuilds() {
-        const builds = [];
-        for (const key in localStorage) {
-          if (key.startsWith("ror2-")) {
-            try {
-              const data = JSON.parse(localStorage.getItem(key));
-              builds.push({
-                key,
-                name: key.replace("ror2-", "").replace(/-/g, " "),
-                ...data,
-              });
-            } catch {}
-          }
-        }
-        return builds;
-      }
+            function renderBuilds() {
+                const container = document.getElementById("build-list");
+                container.innerHTML = "";
 
-      function renderBuilds() {
-        const container = document.getElementById("build-list");
-        container.innerHTML = "";
-
-        getAllBuilds().forEach((build) => {
-          const card = document.createElement("div");
-          card.className = "build-card";
-          card.innerHTML = `
+                getAllBuilds().forEach((build) => {
+                    const card = document.createElement("div");
+                    card.className = "build-card";
+                    card.innerHTML = `
             <h3>${build.name}</h3>
             <p><strong>Survivor:</strong> ${
-              build.key.includes("railgunner")
-                ? "Railgunner"
-                : build.key.includes("loader")
-                ? "Loader"
-                : build.key.includes("commando")
-                ? "Commando"
-                : build.key.includes("huntress")
-                ? "Huntress"
-                : build.key.includes("bandit")
-                ? "Bandit"
-                : build.key.includes("mult")
-                ? "MUL-T"
-                : "Unknown"
+                build.key.includes("railgunner")
+                    ? "Railgunner"
+                    : build.key.includes("loader")
+                      ? "Loader"
+                      : build.key.includes("commando")
+                        ? "Commando"
+                        : build.key.includes("huntress")
+                          ? "Huntress"
+                          : build.key.includes("bandit")
+                            ? "Bandit"
+                            : build.key.includes("mult")
+                              ? "MUL-T"
+                              : build.key.includes("artificer")
+                                ? "Artificer"
+                                : build.key.includes("engineer")
+                                  ? "Engineer"
+                                  : build.key.includes("mercenary")
+                                    ? "Mercenary"
+                                    : build.key.includes("rex")
+                                      ? "REX"
+                                      : build.key.includes("acrid")
+                                        ? "Acrid"
+                                        : build.key.includes("captain")
+                                          ? "Captain"
+                                          : build.key.includes("heretic")
+                                            ? "Heretic"
+                                            : build.key.includes("voidFiend")
+                                              ? "Void Fiend"
+                                              : "Unknown"
             }</p>
             <p><strong>Skill:</strong> ${build.skill || "None"}</p>
             <p><strong>Level:</strong> ${build.level}</p>
@@ -76,32 +92,48 @@
             </div>
           `;
 
-          card.querySelector(".load-btn").onclick = () => {
-            if (build.key.includes("railgunner")) {
-              window.location.href = `./survivors/railgunner.html?load=${build.key}`;
-            } else if (build.key.includes("loader")) {
-              window.location.href = `./survivors/loader.html?load=${build.key}`;
-            } else if (build.key.includes("commando")) {
-              window.location.href = `./survivors/commando.html?load=${build.key}`;
-            } else if (build.key.includes("huntress")) {
-              window.location.href = `./survivors/huntress.html?load=${build.key}`;
-            } else if (build.key.includes("bandit")) {
-              window.location.href = `./survivors/bandit.html?load=${build.key}`;
-            } else if (build.key.includes("mult")) {
-              window.location.href = `./survivors/mult.html?load=${build.key}`;
+                    card.querySelector(".load-btn").onclick = () => {
+                        if (build.key.includes("railgunner")) {
+                            window.location.href = `./survivors/railgunner.html?load=${build.key}`;
+                        } else if (build.key.includes("loader")) {
+                            window.location.href = `./survivors/loader.html?load=${build.key}`;
+                        } else if (build.key.includes("commando")) {
+                            window.location.href = `./survivors/commando.html?load=${build.key}`;
+                        } else if (build.key.includes("huntress")) {
+                            window.location.href = `./survivors/huntress.html?load=${build.key}`;
+                        } else if (build.key.includes("bandit")) {
+                            window.location.href = `./survivors/bandit.html?load=${build.key}`;
+                        } else if (build.key.includes("mult")) {
+                            window.location.href = `./survivors/mult.html?load=${build.key}`;
+                        } else if (build.key.includes("artificer")) {
+                            window.location.href = `./survivors/artificer.html?load=${build.key}`;
+                        } else if (build.key.includes("engineer")) {
+                            window.location.href = `./survivors/engineer.html?load=${build.key}`;
+                        } else if (build.key.includes("mercenary")) {
+                            window.location.href = `./survivors/mercenary.html?load=${build.key}`;
+                        } else if (build.key.includes("rex")) {
+                            window.location.href = `./survivors/rex.html?load=${build.key}`;
+                        } else if (build.key.includes("acrid")) {
+                            window.location.href = `./survivors/acrid.html?load=${build.key}`;
+                        } else if (build.key.includes("captain")) {
+                            window.location.href = `./survivors/captain.html?load=${build.key}`;
+                        } else if (build.key.includes("heretic")) {
+                            window.location.href = `./survivors/heretic.html?load=${build.key}`;
+                        } else if (build.key.includes("voidFiend")) {
+                            window.location.href = `./survivors/voidFiend.html?load=${build.key}`;
+                        }
+                    };
+
+                    card.querySelector(".delete-btn").onclick = () => {
+                        localStorage.removeItem(build.key);
+                        renderBuilds();
+                    };
+
+                    container.appendChild(card);
+                });
             }
-          };
 
-          card.querySelector(".delete-btn").onclick = () => {
-            localStorage.removeItem(build.key);
             renderBuilds();
-          };
-
-          container.appendChild(card);
-        });
-      }
-
-      renderBuilds();
-    </script>
-  </body>
+        </script>
+    </body>
 </html>
