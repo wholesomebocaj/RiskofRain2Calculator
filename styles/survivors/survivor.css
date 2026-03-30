@@ -82,9 +82,30 @@ button:not(#calculate-btn):hover,
 .survivor-calculator .skill-grid,
 .survivor-calculator .damage-item-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(140px, 1fr);
     gap: 12px;
     margin: 20px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.25rem;
+    scroll-snap-type: x proximity;
+}
+
+.survivor-calculator .skill-grid > *,
+.survivor-calculator .damage-item-grid > * {
+    scroll-snap-align: start;
+}
+
+.survivor-calculator .skill-grid::-webkit-scrollbar,
+.survivor-calculator .damage-item-grid::-webkit-scrollbar {
+    height: 8px;
+}
+
+.survivor-calculator .skill-grid::-webkit-scrollbar-thumb,
+.survivor-calculator .damage-item-grid::-webkit-scrollbar-thumb {
+    background: rgba(37, 99, 235, 0.35);
+    border-radius: 9999px;
 }
 
 .survivor-calculator .skill-tile,
