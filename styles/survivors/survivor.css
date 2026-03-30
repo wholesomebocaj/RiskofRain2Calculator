@@ -31,39 +31,38 @@ button:not(#calculate-btn):hover,
    COMMANDO DAMAGE CALCULATOR
 ============================================================================ */
 .survivor-calculator {
-    --survivor-accent: #3ca7d6;
-    --survivor-accent-dark: #23678f;
-    --survivor-dark: #23678f;
-    --item-bg: rgba(15, 39, 56, 0.3);
-    display: flex;
-    align-items: flex-start;
-    width: 100%;
-    min-width: 1400px;
-    background: #0a0e1a;
+    --survivor-accent: #2563eb;
+    --survivor-accent-dark: #1d4ed8;
+    --survivor-dark: #1e40af;
+    --item-bg: #f8fafc;
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.9fr);
+    gap: 1.5rem;
+    width: min(100%, 1240px);
+    margin: 2rem auto;
+    background: transparent;
     overflow: visible;
 }
 
 .survivor-calculator .settings-panel {
-    width: 50%;
-    min-width: 700px;
+    width: 100%;
     padding: 30px;
-    border-right: 1px solid rgba(255, 79, 79, 0.3);
-    background: rgba(10, 14, 26, 0.95);
+    border: 1px solid var(--survivor-border);
+    background: var(--survivor-panel);
     box-sizing: border-box;
-    max-height: calc(140vh - 20px);
-    overflow-y: auto;
+    max-height: none;
+    overflow: visible;
 }
 
 .survivor-calculator .output-panel {
-    width: 50%;
-    min-width: 700px;
+    width: 100%;
     padding: 30px;
-    background: rgba(96, 15, 15, 0.1);
+    background: var(--survivor-panel);
     box-sizing: border-box;
     position: sticky;
-    top: 20px;
+    top: 1.5rem;
     height: max-content;
-    align-self: flex-start;
+    align-self: start;
 }
 
 .survivor-calculator .input-group {
@@ -298,39 +297,18 @@ input[type="range"]::-moz-range-thumb:hover {
 }
 
 input[type="range"]::-moz-range-track {
-    background: rgba(255, 79, 79, 0.2);
-    height: 10px;
-    border-radius: 6px;
+    background: var(--survivor-border);
+    height: 8px;
+    border-radius: 999px;
 }
-
-/* ============================================
-   COMMANDO SLIDER COLOR CUSTOMIZATION
-=============================================== */
 
 .survivor-calculator input[type="range"] {
     accent-color: var(--survivor-accent);
 }
 
-.survivor-calculator {
-    display: flex;
-    align-items: flex-start; /* so the sticky panel doesn't stretch */
-}
-
 .sticky-panel {
     position: sticky;
-    top: 20px; /* same offset you used on Railgunner */
-    align-self: flex-start;
-    height: max-content;
-}
-
-/* reuse the same railgunner styles */
-.calculator {
-    display: flex;
-    align-items: flex-start;
-}
-.output-panel {
-    position: sticky;
-    top: 20px;
-    align-self: flex-start;
+    top: 1.5rem;
+    align-self: start;
     height: max-content;
 }
