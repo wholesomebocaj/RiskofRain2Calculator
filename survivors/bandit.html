@@ -41,19 +41,6 @@
           <input type="range" id="level" min="1" max="99" value="20" />
         </div>
 
-        <div class="input-group">
-          <label>
-            Movement Buff: <span id="speed-buff-display">0%</span>
-          </label>
-          <input
-            type="range"
-            id="speed-buff"
-            min="0"
-            max="100"
-            step="5"
-            value="0"
-          />
-        </div>
 
         <div class="input-group">
           <h2>Select Skill</h2>
@@ -145,8 +132,6 @@
 
       const elements = {
         levelSlider: document.getElementById("level"),
-        speedBuffSlider: document.getElementById("speed-buff"),
-        speedBuffDisplay: document.getElementById("speed-buff-display"),
         skillGrid: document.getElementById("skill-grid"),
         activeSkillDisplay: document.getElementById("active-skill"),
         levelDisplay: document.getElementById("level-display"),
@@ -199,7 +184,6 @@
         }
 
         const level = parseInt(elements.levelSlider.value);
-        const speedBuff = parseInt(elements.speedBuffSlider.value);
         const skill = skills[selectedSkill];
         const baseDamage = 12 + 2.4 * (level - 1);
         const skillDamage = baseDamage * skill.multiplier;
@@ -218,10 +202,7 @@
         });
 
         const preCrit = skillDamage * itemMultiplier;
-        const speedMultiplier = 1 + speedBuff / 100;
         const crit = preCrit * 2;
-        const moveBuff = preCrit * speedMultiplier;
-        const moveBuffCrit = crit * speedMultiplier;
 
         const isBandTrigger = skill.multiplier >= 4;
         const runaldBonus =
@@ -253,15 +234,6 @@
                 crit + runaldBonus + kjaroBonus
               ).toLocaleString()} Damage</p></div>
 
-            <div class="damage-section"><h4>Movement Buff Hit</h4>
-              <p class="damage-value">${Math.round(
-                moveBuff + runaldBonus + kjaroBonus
-              ).toLocaleString()} Damage</p></div>
-
-            <div class="damage-section"><h4>Movement Buff Crit</h4>
-              <p class="damage-value">${Math.round(
-                moveBuffCrit + runaldBonus + kjaroBonus
-              ).toLocaleString()} Damage</p></div>
 
             <div class="damage-breakdown">
               <p>Base: ${baseDamage.toFixed(1)} × ${
@@ -279,7 +251,6 @@
                     ).toLocaleString()}</p>`
                   : ""
               }
-              <p>Speed Buff: ${speedBuff}% → ×${speedMultiplier.toFixed(2)}</p>
             </div>
           </div>
         `;
@@ -296,9 +267,6 @@
         ).toFixed(1);
       });
 
-      elements.speedBuffSlider.addEventListener("input", () => {
-        elements.speedBuffDisplay.textContent = `${elements.speedBuffSlider.value}%`;
-      });
 
       elements.calculateBtn.addEventListener("click", calculateDamage);
 
@@ -311,18 +279,15 @@
         12 +
         2.4 * (parseInt(elements.levelSlider.value) - 1)
       ).toFixed(1);
-      elements.speedBuffDisplay.textContent = `${elements.speedBuffSlider.value}%`;
 
       document.getElementById("reset-btn").addEventListener("click", () => {
-        // Reset level and speed buff sliders
+        // Reset level slider
         elements.levelSlider.value = 20;
-        elements.speedBuffSlider.value = 0;
 
         elements.levelDisplay.textContent = "20";
         elements.baseDamageDisplay.textContent = (12 + 2.4 * (20 - 1)).toFixed(
           1
         );
-        elements.speedBuffDisplay.textContent = "0%";
 
         // Clear skill selection
         selectedSkill = null;
