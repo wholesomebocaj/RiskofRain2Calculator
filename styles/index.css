@@ -135,6 +135,7 @@ body {
 
 .index-survivor-card:hover img {
     transform: scale(1.08);
+    filter: drop-shadow(0 0 12px var(--shadow-accent));
 }
 
 .index-survivor-card h2 {
@@ -174,20 +175,4 @@ body {
     }
 }
 
-/* ===================================================
-   THEMED HOVER GLOWS (survivor-specific)
-=================================================== */
-
-.index-survivor-card.railgunner:hover {
-    box-shadow: 0 12px 25px rgba(138, 43, 226, 0.35);
-}
-.index-survivor-card.railgunner:hover img {
-    filter: drop-shadow(0 0 12px rgba(138, 43, 226, 0.6));
-}
-
-.index-survivor-card.loader:hover {
-    box-shadow: 0 12px 25px rgba(255, 79, 79, 0.35);
-}
-.index-survivor-card.loader:hover img {
-    filter: drop-shadow(0 0 12px rgba(255, 79, 79, 0.6));
-}
+/* Survivor-specific hover effects removed for consistency */
