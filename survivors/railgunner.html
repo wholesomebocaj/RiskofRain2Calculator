@@ -1,303 +1,319 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Railgunner Calculator</title>
-    <link rel="stylesheet" href="../styles/global.css" />
-    <link rel="stylesheet" href="../styles/survivors/railgunner.css" />
-    <link rel="stylesheet" href="../styles/navbar.css" />
-  </head>
-  <body>
-    <div class="navbar enhanced-navbar">
-      <a href="../index.html" class="nav-back">
-        <span class="arrow">←</span> Back to Survivors
-      </a>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Railgunner Calculator</title>
+        <link rel="stylesheet" href="../styles/global.css" />
+        <link rel="stylesheet" href="../styles/survivors/survivor.css" />
+        <link rel="stylesheet" href="../styles/navbar.css" />
+    </head>
+    <body>
+        <div class="navbar enhanced-navbar">
+            <a href="../index.html" class="nav-back">
+                <span class="arrow">←</span> Back to Survivors
+            </a>
 
-      <div class="nav-center">
-        <img
-          src="../images/Survivor_Icons/railgunner-icon.png"
-          alt="Railgunner"
-          class="nav-icon"
-        />
-        <h1 class="nav-title">Railgunner Damage Calculator</h1>
-      </div>
+            <div class="nav-center">
+                <img
+                    src="../images/Survivor_Icons/railgunner-icon.png"
+                    alt="Railgunner"
+                    class="nav-icon"
+                />
+                <h1 class="nav-title">Railgunner Damage Calculator</h1>
+            </div>
 
-      <div class="nav-filler nav-links">
-        <a href="../savedBuilds.html" class="nav-link">Saved Builds</a>
-      </div>
-    </div>
-
-    <div class="calculator railgunner-calculator">
-      <!-- Left Panel -->
-      <div class="settings-panel">
-        <div class="input-group">
-          <label>
-            Survivor Level: <span id="level-display">20</span>
-            <span class="base-damage"
-              >(Base Damage: <span id="base-damage-display">57.6</span>)</span
-            >
-          </label>
-          <input type="range" id="level" min="1" max="99" value="20" />
+            <div class="nav-filler nav-links">
+                <a href="../savedBuilds.html" class="nav-link">Saved Builds</a>
+            </div>
         </div>
 
-        <div class="input-group">
-          <h2>Select Skill</h2>
-          <div class="skill-grid" id="skill-grid"></div>
-          <div class="active-skill-display" id="active-skill">
-            <p>No skill selected</p>
-          </div>
+        <div class="calculator railgunner-calculator">
+            <!-- Left Panel -->
+            <div class="settings-panel">
+                <div class="input-group">
+                    <label>
+                        Survivor Level: <span id="level-display">20</span>
+                        <span class="base-damage"
+                            >(Base Damage:
+                            <span id="base-damage-display">57.6</span>)</span
+                        >
+                    </label>
+                    <input
+                        type="range"
+                        id="level"
+                        min="1"
+                        max="99"
+                        value="20"
+                    />
+                </div>
+
+                <div class="input-group">
+                    <h2>Select Skill</h2>
+                    <div class="skill-grid" id="skill-grid"></div>
+                    <div class="active-skill-display" id="active-skill">
+                        <p>No skill selected</p>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <h2>Damage Items</h2>
+                    <div class="damage-item-grid" id="damage-item-grid"></div>
+                    <div
+                        class="selected-damage-items"
+                        id="selected-damage-items"
+                    >
+                        <p>No damage items selected</p>
+                    </div>
+                </div>
+
+                <div class="button-row">
+                    <button
+                        id="calculate-btn"
+                        class="calculate-btn railgunner-calculate-btn"
+                    >
+                        Calculate Damage
+                    </button>
+
+                    <button id="reset-btn" class="button-style">
+                        🔄 Reset
+                    </button>
+
+                    <button id="save-build" class="button-style">
+                        💾 Save Build
+                    </button>
+
+                    <select id="load-build" class="button-style">
+                        <option value="">📂 Load Build</option>
+                    </select>
+
+                    <div class="share-row">
+                        <button id="share-build" class="button-style">
+                            🔗 Share Build
+                        </button>
+                        <input
+                            type="text"
+                            id="share-url"
+                            readonly
+                            placeholder="Your build link will appear here"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="output-panel">
+                <div class="results-card" id="result"></div>
+            </div>
         </div>
 
-        <div class="input-group">
-          <h2>Damage Items</h2>
-          <div class="damage-item-grid" id="damage-item-grid"></div>
-          <div class="selected-damage-items" id="selected-damage-items">
-            <p>No damage items selected</p>
-          </div>
-        </div>
+        <script>
+            document.body.style.zoom = "90%";
 
-        <div class="button-row">
-          <button
-            id="calculate-btn"
-            class="calculate-btn railgunner-calculate-btn"
-          >
-            Calculate Damage
-          </button>
+            // Skill definitions
+            const skills = {
+                m99: {
+                    name: "M99 Sniper (Primary)",
+                    icon: "../images/Skills/Railgunner/M99_Sniper.png",
+                    multiplier: 12,
+                    description: "High-damage precision shot",
+                    isWeakPoint: false,
+                },
+                xqr: {
+                    name: "XQR Smart Round (Secondary)",
+                    icon: "../images/Skills/Railgunner/XQR_Smart_Round_Sy.png",
+                    multiplier: 10,
+                    description: "1000% homing round",
+                    isWeakPoint: false,
+                },
+                supercharge: {
+                    name: "Supercharge (Special)",
+                    icon: "../images/Skills/Railgunner/Supercharge.png",
+                    multiplier: 40,
+                    description: "4000% damage piercing shot (always crits)",
+                    isWeakPoint: true,
+                },
+            };
 
-          <button id="reset-btn" class="button-style">🔄 Reset</button>
+            // Damage items definitions...
+            const damageItems = {
+                crowbar: {
+                    name: "Crowbar",
+                    icon: "../images/Item_Icons/Crowbar.png",
+                    effect: "+75% vs full health",
+                    multiplier: 1.75,
+                    stackBehavior: "crowbar-style",
+                },
+                armorPiercing: {
+                    name: "Armor-Piercing Rounds",
+                    icon: "../images/Item_Icons/Armor-Piercing_Rounds.png",
+                    effect: "+20% vs bosses",
+                    multiplier: 1.2,
+                    stackBehavior: "multiplicative",
+                    bossOnly: true,
+                },
+                focusCrystal: {
+                    name: "Focus Crystal",
+                    icon: "../images/Item_Icons/Focus_Crystal.png",
+                    effect: "+20% within 13m",
+                    multiplier: 1.2,
+                    stackBehavior: "multiplicative",
+                    rangeLimited: true,
+                },
+                deathMark: {
+                    name: "Death Mark",
+                    icon: "../images/Item_Icons/Death_Mark.png",
+                    effect: "+50% with 4+ debuffs",
+                    multiplier: 1.5,
+                    stackBehavior: "multiplicative",
+                    requiresDebuffs: true,
+                },
+                delicateWatch: {
+                    name: "Delicate Watch",
+                    icon: "../images/Item_Icons/Delicate_Watch.png",
+                    effect: "+20% (breaks at 25% HP)",
+                    multiplier: 1.2,
+                    stackBehavior: "multiplicative",
+                    fragile: true,
+                },
+                shapedGlass: {
+                    name: "Shaped Glass",
+                    icon: "../images/Item_Icons/Shaped_Glass.png",
+                    effect: "Double damage, halve HP",
+                    multiplier: 2.0,
+                    stackBehavior: "multiplicative",
+                },
+                glasses: {
+                    name: "Lens-Maker's Glasses",
+                    icon: "../images/Item_Icons/Lens-Makers_Glasses.png",
+                    effect: "+10% crit chance per stack",
+                    multiplier: 1.1,
+                    stackBehavior: "multiplicative",
+                    stackable: true,
+                },
+                runaldsBand: {
+                    name: "Runald’s Band",
+                    icon: "../images/Item_Icons/Runald's_Band.png",
+                    effect: "Slows and deals burst damage",
+                    stackBehavior: "none",
+                },
+                kjarosBand: {
+                    name: "Kjaro’s Band",
+                    icon: "../images/Item_Icons/Kjaro's_Band.png",
+                    effect: "Burns and deals burst damage",
+                    stackBehavior: "none",
+                },
+            };
 
-          <button id="save-build" class="button-style">💾 Save Build</button>
+            let selectedSkill = null;
+            let selectedDamageItems = {};
 
-          <select id="load-build" class="button-style">
-            <option value="">📂 Load Build</option>
-          </select>
+            const elements = {
+                levelSlider: document.getElementById("level"),
+                levelDisplay: document.getElementById("level-display"),
+                baseDamageDisplay: document.getElementById(
+                    "base-damage-display",
+                ),
+                calculateBtn: document.getElementById("calculate-btn"),
+                skillGrid: document.getElementById("skill-grid"),
+                activeSkillDisplay: document.getElementById("active-skill"),
+                damageItemGrid: document.getElementById("damage-item-grid"),
+                selectedDamageItemsDisplay: document.getElementById(
+                    "selected-damage-items",
+                ),
+                resultDiv: document.getElementById("result"),
+            };
 
-          <div class="share-row">
-            <button id="share-build" class="button-style">
-              🔗 Share Build
-            </button>
-            <input
-              type="text"
-              id="share-url"
-              readonly
-              placeholder="Your build link will appear here"
-            />
-          </div>
-        </div>
-      </div>
+            // item multiplier helper
+            function calculateItemMultiplier(item, count) {
+                if (!count || count <= 0) return 1;
+                switch (item.stackBehavior) {
+                    case "crowbar-style":
+                        return 1.75 + 0.75 * (count - 1);
+                    case "multiplicative":
+                        return Math.pow(item.multiplier, count);
+                    default:
+                        return 1;
+                }
+            }
 
-      <!-- Right Panel -->
-      <div class="output-panel">
-        <div class="results-card" id="result"></div>
-      </div>
-    </div>
-
-    <script>
-      document.body.style.zoom = "90%";
-
-      // Skill definitions
-      const skills = {
-        m99: {
-          name: "M99 Sniper (Primary)",
-          icon: "../images/Skills/Railgunner/M99_Sniper.png",
-          multiplier: 12,
-          description: "High-damage precision shot",
-          isWeakPoint: false,
-        },
-        xqr: {
-          name: "XQR Smart Round (Secondary)",
-          icon: "../images/Skills/Railgunner/XQR_Smart_Round_Sy.png",
-          multiplier: 10,
-          description: "1000% homing round",
-          isWeakPoint: false,
-        },
-        supercharge: {
-          name: "Supercharge (Special)",
-          icon: "../images/Skills/Railgunner/Supercharge.png",
-          multiplier: 40,
-          description: "4000% damage piercing shot (always crits)",
-          isWeakPoint: true,
-        },
-      };
-
-      // Damage items definitions...
-      const damageItems = {
-        crowbar: {
-          name: "Crowbar",
-          icon: "../images/Item_Icons/Crowbar.png",
-          effect: "+75% vs full health",
-          multiplier: 1.75,
-          stackBehavior: "crowbar-style",
-        },
-        armorPiercing: {
-          name: "Armor-Piercing Rounds",
-          icon: "../images/Item_Icons/Armor-Piercing_Rounds.png",
-          effect: "+20% vs bosses",
-          multiplier: 1.2,
-          stackBehavior: "multiplicative",
-          bossOnly: true,
-        },
-        focusCrystal: {
-          name: "Focus Crystal",
-          icon: "../images/Item_Icons/Focus_Crystal.png",
-          effect: "+20% within 13m",
-          multiplier: 1.2,
-          stackBehavior: "multiplicative",
-          rangeLimited: true,
-        },
-        deathMark: {
-          name: "Death Mark",
-          icon: "../images/Item_Icons/Death_Mark.png",
-          effect: "+50% with 4+ debuffs",
-          multiplier: 1.5,
-          stackBehavior: "multiplicative",
-          requiresDebuffs: true,
-        },
-        delicateWatch: {
-          name: "Delicate Watch",
-          icon: "../images/Item_Icons/Delicate_Watch.png",
-          effect: "+20% (breaks at 25% HP)",
-          multiplier: 1.2,
-          stackBehavior: "multiplicative",
-          fragile: true,
-        },
-        shapedGlass: {
-          name: "Shaped Glass",
-          icon: "../images/Item_Icons/Shaped_Glass.png",
-          effect: "Double damage, halve HP",
-          multiplier: 2.0,
-          stackBehavior: "multiplicative",
-        },
-        glasses: {
-          name: "Lens-Maker's Glasses",
-          icon: "../images/Item_Icons/Lens-Makers_Glasses.png",
-          effect: "+10% crit chance per stack",
-          multiplier: 1.1,
-          stackBehavior: "multiplicative",
-          stackable: true,
-        },
-        runaldsBand: {
-          name: "Runald’s Band",
-          icon: "../images/Item_Icons/Runald's_Band.png",
-          effect: "Slows and deals burst damage",
-          stackBehavior: "none",
-        },
-        kjarosBand: {
-          name: "Kjaro’s Band",
-          icon: "../images/Item_Icons/Kjaro's_Band.png",
-          effect: "Burns and deals burst damage",
-          stackBehavior: "none",
-        },
-      };
-
-      let selectedSkill = null;
-      let selectedDamageItems = {};
-
-      const elements = {
-        levelSlider: document.getElementById("level"),
-        levelDisplay: document.getElementById("level-display"),
-        baseDamageDisplay: document.getElementById("base-damage-display"),
-        calculateBtn: document.getElementById("calculate-btn"),
-        skillGrid: document.getElementById("skill-grid"),
-        activeSkillDisplay: document.getElementById("active-skill"),
-        damageItemGrid: document.getElementById("damage-item-grid"),
-        selectedDamageItemsDisplay: document.getElementById(
-          "selected-damage-items"
-        ),
-        resultDiv: document.getElementById("result"),
-      };
-
-      // item multiplier helper
-      function calculateItemMultiplier(item, count) {
-        if (!count || count <= 0) return 1;
-        switch (item.stackBehavior) {
-          case "crowbar-style":
-            return 1.75 + 0.75 * (count - 1);
-          case "multiplicative":
-            return Math.pow(item.multiplier, count);
-          default:
-            return 1;
-        }
-      }
-
-      // populate skill grid
-      function initSkillGrid() {
-        elements.skillGrid.innerHTML = "";
-        Object.entries(skills).forEach(([id, skill]) => {
-          const tile = document.createElement("div");
-          tile.className = `skill-tile ${selectedSkill === id ? "active" : ""}`;
-          tile.innerHTML = `
+            // populate skill grid
+            function initSkillGrid() {
+                elements.skillGrid.innerHTML = "";
+                Object.entries(skills).forEach(([id, skill]) => {
+                    const tile = document.createElement("div");
+                    tile.className = `skill-tile ${selectedSkill === id ? "active" : ""}`;
+                    tile.innerHTML = `
             <img src="${skill.icon}" alt="${skill.name}" />
             <h4>${skill.name}</h4>
             <p>${skill.description}</p>`;
-          tile.addEventListener("click", () => {
-            selectedSkill = id;
-            updateSkillDisplay();
-            initSkillGrid();
-          });
-          elements.skillGrid.appendChild(tile);
-        });
-      }
+                    tile.addEventListener("click", () => {
+                        selectedSkill = id;
+                        updateSkillDisplay();
+                        initSkillGrid();
+                    });
+                    elements.skillGrid.appendChild(tile);
+                });
+            }
 
-      // populate items grid
-      function initDamageItemGrid() {
-        elements.damageItemGrid.innerHTML = "";
-        Object.entries(damageItems).forEach(([id, item]) => {
-          const count = selectedDamageItems[id]?.count || 0;
-          const tile = document.createElement("div");
-          tile.className = `damage-item-tile ${count ? "active" : ""}`;
-          tile.innerHTML = `
+            // populate items grid
+            function initDamageItemGrid() {
+                elements.damageItemGrid.innerHTML = "";
+                Object.entries(damageItems).forEach(([id, item]) => {
+                    const count = selectedDamageItems[id]?.count || 0;
+                    const tile = document.createElement("div");
+                    tile.className = `damage-item-tile ${count ? "active" : ""}`;
+                    tile.innerHTML = `
             <img src="${item.icon}" alt="${item.name}" />
             <h4>${item.name}</h4>
             <p>${item.effect}</p>
             ${count > 0 ? `<span class="item-count">${count}</span>` : ""}`;
-          tile.addEventListener("click", () => {
-            selectedDamageItems[id] = selectedDamageItems[id]
-              ? {
-                  ...selectedDamageItems[id],
-                  count: selectedDamageItems[id].count + 1,
-                }
-              : { item, count: 1 };
-            updateDamageItemDisplay();
-            initDamageItemGrid();
-          });
-          elements.damageItemGrid.appendChild(tile);
-        });
-      }
+                    tile.addEventListener("click", () => {
+                        selectedDamageItems[id] = selectedDamageItems[id]
+                            ? {
+                                  ...selectedDamageItems[id],
+                                  count: selectedDamageItems[id].count + 1,
+                              }
+                            : { item, count: 1 };
+                        updateDamageItemDisplay();
+                        initDamageItemGrid();
+                    });
+                    elements.damageItemGrid.appendChild(tile);
+                });
+            }
 
-      // update active skill display
-      function updateSkillDisplay() {
-        if (!selectedSkill) {
-          elements.activeSkillDisplay.innerHTML = `<p>No skill selected</p>`;
-          return;
-        }
-        const skill = skills[selectedSkill];
-        elements.activeSkillDisplay.innerHTML = `
+            // update active skill display
+            function updateSkillDisplay() {
+                if (!selectedSkill) {
+                    elements.activeSkillDisplay.innerHTML = `<p>No skill selected</p>`;
+                    return;
+                }
+                const skill = skills[selectedSkill];
+                elements.activeSkillDisplay.innerHTML = `
           <img src="${skill.icon}" class="active-skill-icon" />
           <div>
             <h4>${skill.name}</h4>
             <p>${skill.description}</p>
           </div>`;
-      }
+            }
 
-      // update active items display
-      function updateDamageItemDisplay() {
-        const items = Object.entries(selectedDamageItems)
-          .filter(([, d]) => d.count > 0)
-          .map(([id, d]) => ({ ...d.item, count: d.count, id }));
+            // update active items display
+            function updateDamageItemDisplay() {
+                const items = Object.entries(selectedDamageItems)
+                    .filter(([, d]) => d.count > 0)
+                    .map(([id, d]) => ({ ...d.item, count: d.count, id }));
 
-        if (!items.length) {
-          elements.selectedDamageItemsDisplay.innerHTML =
-            "<p>No damage items selected</p>";
-          return;
-        }
+                if (!items.length) {
+                    elements.selectedDamageItemsDisplay.innerHTML =
+                        "<p>No damage items selected</p>";
+                    return;
+                }
 
-        elements.selectedDamageItemsDisplay.innerHTML = `
+                elements.selectedDamageItemsDisplay.innerHTML = `
           <h4>Active Damage Buffs</h4>
           <div class="active-damage-items">
             ${items
-              .map(
-                (item) => `
+                .map(
+                    (item) => `
               <div class="active-damage-item" data-id="${item.id}">
                 <img src="${item.icon}" />
                 <span>${item.name} (${item.effect})</span>
@@ -307,91 +323,100 @@
                   <button class="increase-item">+</button>
                 </div>
               </div>
-            `
-              )
-              .join("")}
+            `,
+                )
+                .join("")}
           </div>`;
 
-        document.querySelectorAll(".increase-item").forEach((btn) =>
-          btn.addEventListener("click", (e) => {
-            const id = e.target.closest(".active-damage-item").dataset.id;
-            selectedDamageItems[id].count++;
-            updateDamageItemDisplay();
-            initDamageItemGrid();
-          })
-        );
-        document.querySelectorAll(".decrease-item").forEach((btn) =>
-          btn.addEventListener("click", (e) => {
-            const id = e.target.closest(".active-damage-item").dataset.id;
-            selectedDamageItems[id].count--;
-            if (selectedDamageItems[id].count <= 0)
-              delete selectedDamageItems[id];
-            updateDamageItemDisplay();
-            initDamageItemGrid();
-          })
-        );
-      }
+                document.querySelectorAll(".increase-item").forEach((btn) =>
+                    btn.addEventListener("click", (e) => {
+                        const id = e.target.closest(".active-damage-item")
+                            .dataset.id;
+                        selectedDamageItems[id].count++;
+                        updateDamageItemDisplay();
+                        initDamageItemGrid();
+                    }),
+                );
+                document.querySelectorAll(".decrease-item").forEach((btn) =>
+                    btn.addEventListener("click", (e) => {
+                        const id = e.target.closest(".active-damage-item")
+                            .dataset.id;
+                        selectedDamageItems[id].count--;
+                        if (selectedDamageItems[id].count <= 0)
+                            delete selectedDamageItems[id];
+                        updateDamageItemDisplay();
+                        initDamageItemGrid();
+                    }),
+                );
+            }
 
-      // calculation
-      function calculateDamage() {
-        if (!selectedSkill) {
-          showError("Please select a skill first!");
-          return;
-        }
-        const level = +elements.levelSlider.value;
-        const skill = skills[selectedSkill];
-        const base = 12 + 2.4 * (level - 1);
-        const totalSkill = base * skill.multiplier;
+            // calculation
+            function calculateDamage() {
+                if (!selectedSkill) {
+                    showError("Please select a skill first!");
+                    return;
+                }
+                const level = +elements.levelSlider.value;
+                const skill = skills[selectedSkill];
+                const base = 12 + 2.4 * (level - 1);
+                const totalSkill = base * skill.multiplier;
 
-        let itemMultiplier = 1;
-        Object.values(selectedDamageItems).forEach(
-          (d) => (itemMultiplier *= calculateItemMultiplier(d.item, d.count))
-        );
+                let itemMultiplier = 1;
+                Object.values(selectedDamageItems).forEach(
+                    (d) =>
+                        (itemMultiplier *= calculateItemMultiplier(
+                            d.item,
+                            d.count,
+                        )),
+                );
 
-        const runaldBonus =
-          skill.multiplier >= 4 && selectedDamageItems.runaldsBand
-            ? base * 2.5
-            : 0;
-        const kjaroBonus =
-          skill.multiplier >= 4 && selectedDamageItems.kjarosBand
-            ? base * 3.0
-            : 0;
+                const runaldBonus =
+                    skill.multiplier >= 4 && selectedDamageItems.runaldsBand
+                        ? base * 2.5
+                        : 0;
+                const kjaroBonus =
+                    skill.multiplier >= 4 && selectedDamageItems.kjarosBand
+                        ? base * 3.0
+                        : 0;
 
-        const critChance = Math.min(
-          1,
-          (selectedDamageItems.glasses?.count || 0) * 0.1
-        );
-        const preCrit = totalSkill * itemMultiplier;
-        const regular = Math.round(
-          preCrit * (1 - critChance) +
-            preCrit * 2 * critChance +
-            runaldBonus +
-            kjaroBonus
-        );
-        const weakPt = Math.round(preCrit * 2.5 + runaldBonus + kjaroBonus);
+                const critChance = Math.min(
+                    1,
+                    (selectedDamageItems.glasses?.count || 0) * 0.1,
+                );
+                const preCrit = totalSkill * itemMultiplier;
+                const regular = Math.round(
+                    preCrit * (1 - critChance) +
+                        preCrit * 2 * critChance +
+                        runaldBonus +
+                        kjaroBonus,
+                );
+                const weakPt = Math.round(
+                    preCrit * 2.5 + runaldBonus + kjaroBonus,
+                );
 
-        showResult(
-          {
-            base: base.toFixed(1),
-            skill,
-            critChance,
-            regularDamage: regular,
-            weakPointDamage: weakPt,
-            preCrit: Math.round(preCrit),
-            modifiers: Object.entries(selectedDamageItems).map(
-              ([_, d]) => `${d.item.name}${d.count > 1 ? `×${d.count}` : ""}`
-            ),
-            totalMultiplier: itemMultiplier.toFixed(2),
-            runaldBonus: Math.round(runaldBonus),
-            kjaroBonus: Math.round(kjaroBonus),
-          },
-          level
-        );
-      }
+                showResult(
+                    {
+                        base: base.toFixed(1),
+                        skill,
+                        critChance,
+                        regularDamage: regular,
+                        weakPointDamage: weakPt,
+                        preCrit: Math.round(preCrit),
+                        modifiers: Object.entries(selectedDamageItems).map(
+                            ([_, d]) =>
+                                `${d.item.name}${d.count > 1 ? `×${d.count}` : ""}`,
+                        ),
+                        totalMultiplier: itemMultiplier.toFixed(2),
+                        runaldBonus: Math.round(runaldBonus),
+                        kjaroBonus: Math.round(kjaroBonus),
+                    },
+                    level,
+                );
+            }
 
-      // render results
-      function showResult(r, lvl) {
-        elements.resultDiv.innerHTML = `
+            // render results
+            function showResult(r, lvl) {
+                elements.resultDiv.innerHTML = `
           <div class="results-card">
             <h3>Level ${lvl} Railgunner</h3>
             <div class="skill-used">
@@ -403,11 +428,11 @@
               <h4>Regular Hit</h4>
               <p class="damage-value">${r.regularDamage.toLocaleString()} Damage</p>
               ${
-                r.critChance > 0
-                  ? `<p class="damage-note">Includes ${Math.round(
-                      r.critChance * 100
-                    )}% crit chance</p>`
-                  : ""
+                  r.critChance > 0
+                      ? `<p class="damage-note">Includes ${Math.round(
+                            r.critChance * 100,
+                        )}% crit chance</p>`
+                      : ""
               }
             </div>
 
@@ -422,116 +447,129 @@
               <p>Total Multiplier: ×${r.totalMultiplier}</p>
               <p>Pre‑Crit Damage: ${r.preCrit.toLocaleString()}</p>
               ${
-                r.runaldBonus || r.kjaroBonus
-                  ? `<p>Burst: Runald’s +${r.runaldBonus}, Kjaro’s +${r.kjaroBonus}</p>`
-                  : ""
+                  r.runaldBonus || r.kjaroBonus
+                      ? `<p>Burst: Runald’s +${r.runaldBonus}, Kjaro’s +${r.kjaroBonus}</p>`
+                      : ""
               }
             </div>
           </div>`;
-      }
+            }
 
-      function showError(msg) {
-        elements.resultDiv.innerHTML = `<div class="error-card"><p class="error">${msg}</p></div>`;
-      }
+            function showError(msg) {
+                elements.resultDiv.innerHTML = `<div class="error-card"><p class="error">${msg}</p></div>`;
+            }
 
-      // reset logic
-      document.getElementById("reset-btn").addEventListener("click", () => {
-        selectedSkill = null;
-        selectedDamageItems = {};
-        elements.levelSlider.value = 20;
-        elements.levelDisplay.textContent = 20;
-        elements.baseDamageDisplay.textContent = (12 + 2.4 * 19).toFixed(1);
-        updateSkillDisplay();
-        initSkillGrid();
-        updateDamageItemDisplay();
-        initDamageItemGrid();
-        elements.resultDiv.innerHTML = "";
-        document.getElementById("load-build").selectedIndex = 0;
-      });
+            // reset logic
+            document
+                .getElementById("reset-btn")
+                .addEventListener("click", () => {
+                    selectedSkill = null;
+                    selectedDamageItems = {};
+                    elements.levelSlider.value = 20;
+                    elements.levelDisplay.textContent = 20;
+                    elements.baseDamageDisplay.textContent = (
+                        12 +
+                        2.4 * 19
+                    ).toFixed(1);
+                    updateSkillDisplay();
+                    initSkillGrid();
+                    updateDamageItemDisplay();
+                    initDamageItemGrid();
+                    elements.resultDiv.innerHTML = "";
+                    document.getElementById("load-build").selectedIndex = 0;
+                });
 
-      // share link
-      document.getElementById("share-build").addEventListener("click", () => {
-        const lvl = elements.levelSlider.value;
-        const sk = selectedSkill || "";
-        const items = Object.entries(selectedDamageItems)
-          .filter(([, d]) => d.count > 0)
-          .map(([id, d]) => `${id}:${d.count}`)
-          .join(",");
-        const params = new URLSearchParams({ level: lvl, skill: sk, items });
-        document.getElementById(
-          "share-url"
-        ).value = `${location.origin}${location.pathname}?${params}`;
-      });
+            // share link
+            document
+                .getElementById("share-build")
+                .addEventListener("click", () => {
+                    const lvl = elements.levelSlider.value;
+                    const sk = selectedSkill || "";
+                    const items = Object.entries(selectedDamageItems)
+                        .filter(([, d]) => d.count > 0)
+                        .map(([id, d]) => `${id}:${d.count}`)
+                        .join(",");
+                    const params = new URLSearchParams({
+                        level: lvl,
+                        skill: sk,
+                        items,
+                    });
+                    document.getElementById("share-url").value =
+                        `${location.origin}${location.pathname}?${params}`;
+                });
 
-      // dropdown save/load omitted for brevity...
-      elements.levelSlider.addEventListener("input", () => {
-        const lv = +elements.levelSlider.value;
-        elements.levelDisplay.textContent = lv;
-        elements.baseDamageDisplay.textContent = (12 + 2.4 * (lv - 1)).toFixed(
-          1
-        );
-      });
+            // dropdown save/load omitted for brevity...
+            elements.levelSlider.addEventListener("input", () => {
+                const lv = +elements.levelSlider.value;
+                elements.levelDisplay.textContent = lv;
+                elements.baseDamageDisplay.textContent = (
+                    12 +
+                    2.4 * (lv - 1)
+                ).toFixed(1);
+            });
 
-      elements.calculateBtn.addEventListener("click", calculateDamage);
-      initSkillGrid();
-      initDamageItemGrid();
-      updateDamageItemDisplay();
+            elements.calculateBtn.addEventListener("click", calculateDamage);
+            initSkillGrid();
+            initDamageItemGrid();
+            updateDamageItemDisplay();
 
-      function getBuildKey(name = "") {
-        return `ror2-railgunner-${selectedSkill || "noskill"}-${name}`;
-      }
+            function getBuildKey(name = "") {
+                return `ror2-railgunner-${selectedSkill || "noskill"}-${name}`;
+            }
 
-      function saveBuild() {
-        const name = prompt("Name this build:");
-        if (!name) return;
+            function saveBuild() {
+                const name = prompt("Name this build:");
+                if (!name) return;
 
-        const build = {
-          level: elements.levelSlider.value,
-          skill: selectedSkill,
-          items: selectedDamageItems,
-        };
+                const build = {
+                    level: elements.levelSlider.value,
+                    skill: selectedSkill,
+                    items: selectedDamageItems,
+                };
 
-        localStorage.setItem(getBuildKey(name), JSON.stringify(build));
-        alert("✅ Build saved!");
-      }
+                localStorage.setItem(getBuildKey(name), JSON.stringify(build));
+                alert("✅ Build saved!");
+            }
 
-      document
-        .getElementById("save-build")
-        .addEventListener("click", saveBuild);
+            document
+                .getElementById("save-build")
+                .addEventListener("click", saveBuild);
 
-      function loadBuildFromKey(key) {
-        const data = JSON.parse(localStorage.getItem(key));
-        if (!data) return;
+            function loadBuildFromKey(key) {
+                const data = JSON.parse(localStorage.getItem(key));
+                if (!data) return;
 
-        elements.levelSlider.value = data.level;
-        selectedSkill = data.skill;
-        selectedDamageItems = data.items || {};
+                elements.levelSlider.value = data.level;
+                selectedSkill = data.skill;
+                selectedDamageItems = data.items || {};
 
-        elements.levelSlider.dispatchEvent(new Event("input"));
-        updateSkillDisplay();
-        initSkillGrid();
-        updateDamageItemDisplay();
-        initDamageItemGrid();
-      }
+                elements.levelSlider.dispatchEvent(new Event("input"));
+                updateSkillDisplay();
+                initSkillGrid();
+                updateDamageItemDisplay();
+                initDamageItemGrid();
+            }
 
-      function updateLoadDropdown() {
-        const select = document.getElementById("load-build");
-        select.innerHTML = `<option value="">📂 Load Build</option>`;
-        Object.keys(localStorage).forEach((key) => {
-          if (key.startsWith("ror2-railgunner")) {
-            const label = key
-              .replace("ror2-railgunner-", "")
-              .replace(/-/g, " ");
-            select.innerHTML += `<option value="${key}">${label}</option>`;
-          }
-        });
-      }
+            function updateLoadDropdown() {
+                const select = document.getElementById("load-build");
+                select.innerHTML = `<option value="">📂 Load Build</option>`;
+                Object.keys(localStorage).forEach((key) => {
+                    if (key.startsWith("ror2-railgunner")) {
+                        const label = key
+                            .replace("ror2-railgunner-", "")
+                            .replace(/-/g, " ");
+                        select.innerHTML += `<option value="${key}">${label}</option>`;
+                    }
+                });
+            }
 
-      document.getElementById("load-build").addEventListener("change", (e) => {
-        if (e.target.value) loadBuildFromKey(e.target.value);
-      });
+            document
+                .getElementById("load-build")
+                .addEventListener("change", (e) => {
+                    if (e.target.value) loadBuildFromKey(e.target.value);
+                });
 
-      updateLoadDropdown();
-    </script>
-  </body>
+            updateLoadDropdown();
+        </script>
+    </body>
 </html>
