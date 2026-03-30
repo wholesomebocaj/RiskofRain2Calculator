@@ -65,7 +65,7 @@ button:not(#calculate-btn):hover,
     max-width: none;
     margin: 0;
     display: grid;
-    /* Col1: level + abilities | Col2: items + actions | Col3: damage output */
+    /* Settings col1: stats + skills + actions | Settings col2: items only | Col3: damage output */
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr) minmax(260px, 0.92fr);
     grid-template-rows: minmax(0, 1fr);
     gap: 1rem;
@@ -90,7 +90,7 @@ button:not(#calculate-btn):hover,
     align-content: stretch;
 }
 
-/* 3 input-groups + button row — left: level + skills | middle: items + buttons */
+/* 3 input-groups + button row — left: level + skills + buttons | middle: items (full height) */
 .calculator .settings-panel:not(:has(> .input-group:nth-child(4))) {
     grid-template-rows: auto 1fr auto;
 }
@@ -113,7 +113,7 @@ button:not(#calculate-btn):hover,
 .calculator .settings-panel:not(:has(> .input-group:nth-child(4)))
     > .input-group:nth-child(3) {
     grid-column: 2;
-    grid-row: 1 / span 2;
+    grid-row: 1 / span 3;
     min-height: 0;
     display: flex;
     flex-direction: column;
@@ -122,12 +122,12 @@ button:not(#calculate-btn):hover,
 .calculator
     .settings-panel:not(:has(> .input-group:nth-child(4)))
     > .button-row {
-    grid-column: 2;
+    grid-column: 1;
     grid-row: 3;
     align-self: stretch;
 }
 
-/* 4 input-groups + button row — left: level + movement + skills */
+/* 4 input-groups + button row — left: level + movement + skills + buttons | middle: items (full height) */
 .calculator .settings-panel:has(> .input-group:nth-child(4)) {
     grid-template-rows: auto auto 1fr auto;
 }
@@ -152,14 +152,14 @@ button:not(#calculate-btn):hover,
 
 .calculator .settings-panel:has(> .input-group:nth-child(4)) > .input-group:nth-child(4) {
     grid-column: 2;
-    grid-row: 1 / span 3;
+    grid-row: 1 / span 4;
     min-height: 0;
     display: flex;
     flex-direction: column;
 }
 
 .calculator .settings-panel:has(> .input-group:nth-child(4)) > .button-row {
-    grid-column: 2;
+    grid-column: 1;
     grid-row: 4;
     align-self: stretch;
 }
@@ -170,10 +170,15 @@ button:not(#calculate-btn):hover,
     min-height: 0;
 }
 
-.calculator .settings-panel .input-group > .active-skill-display,
-.calculator .settings-panel .input-group > .selected-damage-items {
+.calculator .settings-panel .input-group > .active-skill-display {
     flex-shrink: 0;
-    max-height: 40%;
+    max-height: 42%;
+    overflow: auto;
+}
+
+.calculator .settings-panel .input-group > .selected-damage-items {
+    flex: 1;
+    min-height: 0;
     overflow: auto;
 }
 
